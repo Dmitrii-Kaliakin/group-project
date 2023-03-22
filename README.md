@@ -3,9 +3,8 @@
 1. Создание репозитория git init
 2. Создание коммита git add --all, git commit
 3. Просмотр истории git log
-4. Создание ветки git branch develop
-5. Переключить репозиторий в состояние этой ветки git checkout develop
-6. В ветке develop создать 4 новых ветки (git branch Dmitrii, git branch Lidia, git branch Egor, git branch Alik)
+4. Создание тестовой ветки  git branch develop 
+5. Создание 4-х новых веток для каждого участника (git branch Dmitrii, git branch Lidia, git branch Egor, git branch Alik)
 
 
 Слияние веток:
