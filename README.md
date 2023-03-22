@@ -1,3 +1,32 @@
+# Работа с Git и репозиторием
+
+1. Создание репозитория git init
+2. Создание коммита git add --all, git commit
+3. Просмотр истории git log
+4. Создание ветки git branch develop
+5. Переключить репозиторий в состояние этой ветки git checkout develop
+6. В ветке develop создать 4 новых ветки (git branch Dmitrii, git branch Lidia, git branch Egor, git branch Alik)
+
+
+Слияние веток:
+
+Если мы хотим залить изменения из ветки своей ветки (фичи) в основную то нужно:
+1. Переключаемся на основную ветку git checkout develop
+2. Находясь в основной ветке выполняем команду слияния указывая из какой ветки мы хотим добавить изменения git merge Dmitrii
+3. Если мы хотим залить изменения в ветку с фичей (обратная операция), то переключаемся на ветку с фичей git checkout Dmitrii и выполняем команду git merge develop
+
+Удаление ветки:
+
+1. Если после слияния фичи с основной веткой она нам больше не нужна то мы можем сделать команду удаления ветки git branch -d Dmitrii
+
+
+Отправка комита:
+
+1. Проверка новых изменений в локальном репозитории перед отправкой git status
+2. Если есть новые изменение пишем команду git add --all
+3. Добавляем комит с информацией об изменениях git commit -m "Добавление функционала" 
+4. Запушить на Github командой git push
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
