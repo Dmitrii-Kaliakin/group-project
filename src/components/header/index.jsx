@@ -1,5 +1,5 @@
 import { Logo } from "../logo";
-import { Search } from "../search";
+import { Profile } from '../profile';
 
 import "./styles.css";
 
@@ -7,9 +7,9 @@ export function Header() {
   return (
     <>
       <header className="header">
-        <div className="conteiner header__wrapper">
+        <div className="container header__wrapper">
           <Logo />
-          <Search />
+          <Profile />
         </div>
       </header>
     </>
