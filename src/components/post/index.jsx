@@ -18,7 +18,7 @@ export const Post = ({ text, author, img, tags }) => {
   const avatar = <Avatar src={author?.avatar} alt={''}/>;
   const actionIcon = <IconButton aria-label={'settings'}></IconButton>;
 
-  return <Card sx={{ minWidth: 250 }}>
+  return <Card sx={{ minWidth: 250, height: '100%' }}>
     <CardHeader avatar={avatar} action={actionIcon} title={author?.name} subheader={author?.about}/>
     <CardMedia component={'img'} height={'194'} image={img} alt={'img'}/>
     < CardContent>
