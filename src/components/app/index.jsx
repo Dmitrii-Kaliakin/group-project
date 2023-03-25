@@ -1,18 +1,23 @@
-import { Header } from "../header";
-import { Footer } from "../footer";
-import { Sort } from "../sort";
-import { CardList } from "../card-list";
-import "./styles.css";
+import { Header } from '../header';
+import { Footer } from '../footer';
+import './styles.css';
+import { PostList } from '../post-list';
+import { WelcomeCard } from '../welcome-card';
 
 export function App() {
+
+  const createPost = () => {
+    console.log('Есть контакт')
+  }
+
   return (
     <>
-      <Header />
+      <Header/>
       <main className="content container">
-        <Sort />
-        <CardList />
+        <WelcomeCard createPost={createPost}/>
+        <PostList/>
       </main>
-      <footer />
+      <Footer/>
     </>
   );
 }

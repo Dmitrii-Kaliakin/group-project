@@ -11,3 +11,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#root {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: minmax(50px, max-content) 10fr minmax(10px, max-content);
+}
