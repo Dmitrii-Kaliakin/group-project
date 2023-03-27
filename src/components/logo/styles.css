@@ -1,4 +1,13 @@
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: bold;
+  color: #505050;
+}
+
 .logo__pic {
-  max-width: 100%;
-  max-height: 100%;
+  width: 45px;
 }
