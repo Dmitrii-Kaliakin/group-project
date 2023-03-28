@@ -6,6 +6,7 @@ export function Logo() {
     <>
       <a href="/" className="logo">
         <img src={logoSrc} alt="Логотип компании" className="logo__pic" />
+        Group
       </a>
     </>
   );

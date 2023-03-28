@@ -1,17 +1,27 @@
-import { Logo } from "../logo";
-import { Search } from "../search";
+import { Logo } from '../logo';
+import { Profile } from '../profile';
+import { AppBar, Box, Toolbar } from '@mui/material';
 
-import "./styles.css";
+import './styles.css';
 
 export function Header() {
+
+  const toolbar = {
+    width: 1150,
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  };
+
   return (
-    <>
-      <header className="header">
-        <div className="conteiner header__wrapper">
-          <Logo />
-          <Search />
-        </div>
-      </header>
-    </>
+    <Box sx={{ display: 'flex' }}>
+      <AppBar sx={{ alignItems: 'center', background: 'white' }} component="nav">
+        <Toolbar sx={toolbar}>
+          <Logo/>
+          <Profile/>
+        </Toolbar>
+      </AppBar>
+      <Toolbar/>
+    </Box>
   );
 }
