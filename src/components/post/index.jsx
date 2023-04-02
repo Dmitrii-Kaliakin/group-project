@@ -17,10 +17,12 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ru";
 import "./styles.css";
 
+const MAX_POST_TEXT_LENGTH = 130;
+
 dayjs.locale("ru");
 dayjs.extend(relativeTime);
-export const Post = ({ text, author, img, tags, createPostTime }) => {
-  const avatar = <Avatar src={author?.avatar} alt={""} />;
+export const Post = ({ text, author, img, tags, createPostTime, likes }) => {
+  const avatar = <Avatar src={author?.avatar} alt={""}/>;
   const actionIcon = <IconButton aria-label={"settings"}></IconButton>;
 
   return (
@@ -31,10 +33,10 @@ export const Post = ({ text, author, img, tags, createPostTime }) => {
         title={author?.name}
         subheader={author?.about}
       />
-      <CardMedia component={"img"} height={"194"} image={img} alt={"img"} />
+      <CardMedia component={"img"} height={"194"} image={img} alt={"img"}/>
       <CardContent style={{ height: "60px" }}>
         <Typography variant={"body2"} color={"text.secondary"}>
-          {text}
+          {text?.length > MAX_POST_TEXT_LENGTH ? text.substring(0, MAX_POST_TEXT_LENGTH) + "..." : text}
         </Typography>
       </CardContent>
       <Stack sx={{ padding: "10px" }} direction="row" spacing={1}>
@@ -49,10 +51,11 @@ export const Post = ({ text, author, img, tags, createPostTime }) => {
       </Stack>
       <CardActions style={{ position: "relative" }} disableSpacing>
         <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
+          <FavoriteIcon/>
         </IconButton>
+        <span className={"likes-number"}>{likes?.length}</span>
         <IconButton aria-label="share">
-          <ShareIcon />
+          <ShareIcon/>
         </IconButton>
         <div style={{ position: "absolute", right: "20px" }}>
           <span></span>
