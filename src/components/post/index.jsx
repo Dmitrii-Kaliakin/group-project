@@ -17,8 +17,6 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ru";
 import "./styles.css";
 
-dayjs.locale("ru");
-dayjs.extend(relativeTime);
 export const Post = ({ text, author, img, tags, createPostTime }) => {
   const avatar = <Avatar src={author?.avatar} alt={""} />;
   const actionIcon = <IconButton aria-label={"settings"}></IconButton>;
@@ -55,8 +53,13 @@ export const Post = ({ text, author, img, tags, createPostTime }) => {
           <ShareIcon />
         </IconButton>
         <div style={{ position: "absolute", right: "20px" }}>
-          <span></span>
-          пост создан:
+          <span
+            style={{
+              fontWeight: 600,
+            }}
+          >
+            пост создан:
+          </span>
           <span
             style={{
               marginLeft: "5px",
