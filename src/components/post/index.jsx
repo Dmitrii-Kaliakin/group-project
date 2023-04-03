@@ -21,7 +21,7 @@ const MAX_POST_TEXT_LENGTH = 130;
 
 dayjs.locale("ru");
 dayjs.extend(relativeTime);
-export const Post = ({ text, author, img, tags, createPostTime }) => {
+export const Post = ({ text, author, img, tags, createPostTime, likes }) => {
   const avatar = <Avatar src={author?.avatar} alt={""} />;
   const actionIcon = <IconButton aria-label={"settings"}></IconButton>;
 
@@ -60,13 +60,8 @@ export const Post = ({ text, author, img, tags, createPostTime }) => {
           <ShareIcon />
         </IconButton>
         <div style={{ position: "absolute", right: "20px" }}>
-          <span
-            style={{
-              fontWeight: 600,
-            }}
-          >
-            пост создан:
-          </span>
+          <span></span>
+          пост создан:
           <span
             style={{
               marginLeft: "5px",
