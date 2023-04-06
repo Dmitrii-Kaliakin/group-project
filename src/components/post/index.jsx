@@ -39,13 +39,13 @@ export const Post = ({ post, onPostLike, currentUser, createPostTime }) => {
       <CardHeader
         avatar={avatar}
         action={actionIcon}
-        name={author?.name}
+        title={author?.name}
         subheader={author?.about}
       />
       <CardMedia component={"img"} height={"194"} image={image} alt={"img"}/>
       <CardContent style={{ height: "100px" }}>
         <Typography variant={"body2"} color={"text.secondary"}>
-          <p>{title}</p>
+          {title}<br/><br/>
           {text?.length > MAX_POST_TEXT_LENGTH ? text.substring(0, MAX_POST_TEXT_LENGTH) + "..." : text}
         </Typography>
       </CardContent>
