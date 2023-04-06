@@ -1,15 +1,16 @@
 import "./styles.css";
 import { Container, Grid } from "@mui/material";
-import { postData } from "../../posts";
 import { Post } from "../post";
+import { useMemo } from "react";
 
-export const PostList = () => {
+export const PostList = ({ posts }) => {
+
   const getPostElements = () => {
-    if (!postData?.length) {
+    if (!posts?.length) {
       return [];
     }
 
-    return postData.map((post, index) => {
+    return posts.map((post, index) => {
       return (
         <Grid item key={post._id} xs={12} md={6} lg={4}>
           <Post
@@ -24,6 +25,8 @@ export const PostList = () => {
     });
   };
 
+  const postElements = useMemo(() => getPostElements(), [posts]);
+
   return (
     <Container
       className={"post-list__container"}
@@ -31,7 +34,7 @@ export const PostList = () => {
       sx={{ display: "grid" }}
     >
       <Grid container spacing={2}>
-        {getPostElements()}
+        {postElements}
       </Grid>
       ;
     </Container>

@@ -1,10 +1,11 @@
 import { Logo } from '../logo';
 import { Profile } from '../profile';
+import { SearchBar } from '../search';
 import { AppBar, Box, Toolbar } from '@mui/material';
 
 import './styles.css';
 
-export function Header() {
+export function Header({ handleSearchInputChange, handleSearchSubmit }) {
 
   const toolbar = {
     width: 1150,
@@ -18,6 +19,7 @@ export function Header() {
       <AppBar sx={{ alignItems: 'center', background: 'white' }} component="nav">
         <Toolbar sx={toolbar}>
           <Logo/>
+          <SearchBar handleInputChange={handleSearchInputChange} handleSubmit={handleSearchSubmit}/>
           <Profile/>
         </Toolbar>
       </AppBar>
