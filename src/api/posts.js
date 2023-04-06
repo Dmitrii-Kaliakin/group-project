@@ -1,15 +1,32 @@
 import { BASE_URL, GROUP_ID, HEADERS } from '../config';
 import { Api } from './api';
 
-class PostsApi extends Api {
+class PostApi extends Api {
 
   constructor({ endpoint, headers }) {
     super({ endpoint, headers });
   }
 
   getAll() {
+    return Promise.all([this.getPostsList(), this.getUserInfo()])
+  }
+
+  getPostsList() {
     return fetch(`${this.endpoint}`, { headers: this.headers }).then(this._handleRequest);
   }
+
+  getUserInfo() {
+    return fetch('https://api.react-learning.ru/users/me', { headers: this.headers }).then(this._handleRequest);
+  }
+
+  setUserInfo({ name, about }) {
+    return fetch('https://api.react-learning.ru/users/me', {
+        method: 'PATCH',
+        headers: this.headers,
+        body: JSON.stringify({ name, about })
+    })
+        .then(this._handleRequest)
+}
 
   searchByQuery(query) {
     return fetch(`${this.endpoint}/search?query=${query}`, { headers: this.headers })
@@ -56,23 +73,13 @@ class PostsApi extends Api {
 
     return fetch(`${this.endpoint}/${id}`, options).then(data => this._handleRequest(data));
   }
-
-  addLike(id) {
-    const options = {
-      method: 'PUT',
-      headers: this.headers,
-    };
-
-    return fetch(`${this.endpoint}/likes/${id}`, options).then(data => this._handleRequest(data));
-  }
-
-  removeLike(id) {
-    const options = {
-      method: 'DELETE',
-      headers: this.headers,
-    };
-
-    return fetch(`${this.endpoint}/likes/${id}`, options).then(data => this._handleRequest(data));
+  
+  changeLikePostStatus(postId, likes) {
+    return fetch(`https://api.react-learning.ru/posts/likes/${postId}`, {
+        method: likes ? 'DELETE' : 'PUT',
+        headers: this.headers,
+    })
+        .then(this._handleRequest)
   }
 
   getAllComments() {
@@ -107,7 +114,8 @@ class PostsApi extends Api {
 
 }
 
-export const postApi = new PostsApi({
+export const postApi = new PostApi({
   endpoint: `${BASE_URL}/v2/${GROUP_ID}/posts`,
   headers: HEADERS,
 });
+
