@@ -74,9 +74,9 @@ class PostApi extends Api {
     return fetch(`${this.endpoint}/${id}`, options).then(data => this._handleRequest(data));
   }
   
-  changeLikePostStatus(postId, likes) {
-    return fetch(`https://api.react-learning.ru/posts/likes/${postId}`, {
-        method: likes ? 'DELETE' : 'PUT',
+  changeLikePostStatus(postId, like) {
+    return fetch(`${this.endpoint}/likes/${postId}`, {
+        method: like ? 'DELETE' : 'PUT',
         headers: this.headers,
     })
         .then(this._handleRequest)
