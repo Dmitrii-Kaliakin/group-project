@@ -57,22 +57,12 @@ class PostsApi extends Api {
     return fetch(`${this.endpoint}/${id}`, options).then(data => this._handleRequest(data));
   }
 
-  addLike(id) {
-    const options = {
-      method: 'PUT',
+  changeLikePostStatus(postId, like) {
+    return fetch(`${this.endpoint}/likes/${postId}`, {
+      method: like ? 'DELETE' : 'PUT',
       headers: this.headers,
-    };
-
-    return fetch(`${this.endpoint}/likes/${id}`, options).then(data => this._handleRequest(data));
-  }
-
-  removeLike(id) {
-    const options = {
-      method: 'DELETE',
-      headers: this.headers,
-    };
-
-    return fetch(`${this.endpoint}/likes/${id}`, options).then(data => this._handleRequest(data));
+    })
+      .then(this._handleRequest)
   }
 
   getAllComments() {
