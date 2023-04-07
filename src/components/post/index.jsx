@@ -10,17 +10,14 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import CommentIcon from "@mui/icons-material/Comment";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import "dayjs/locale/ru";
 import "./styles.css";
 
 const MAX_POST_TEXT_LENGTH = 130;
 
-dayjs.locale("ru");
-dayjs.extend(relativeTime);
 export const Post = ({ text, author, img, tags, createPostTime, likes }) => {
   const avatar = <Avatar src={author?.avatar} alt={""} />;
   const actionIcon = <IconButton aria-label={"settings"}></IconButton>;
@@ -41,7 +38,11 @@ export const Post = ({ text, author, img, tags, createPostTime, likes }) => {
             : text}
         </Typography>
       </CardContent>
-      <Stack sx={{ padding: "10px" }} direction="row" spacing={1}>
+      <Stack
+        sx={{ padding: "10px", height: "32px" }}
+        direction="row"
+        spacing={1}
+      >
         {tags?.map((tag, index) => (
           <Chip
             key={`tag_${index}`}
@@ -56,12 +57,21 @@ export const Post = ({ text, author, img, tags, createPostTime, likes }) => {
           <FavoriteIcon />
         </IconButton>
         <span className={"likes-number"}>{likes?.length}</span>
-        <IconButton aria-label="share">
-          <ShareIcon />
+        <IconButton aria-label="delete">
+          <DeleteForeverIcon />
+        </IconButton>
+        <IconButton aria-label="comments">
+          <CommentIcon />
         </IconButton>
         <div style={{ position: "absolute", right: "20px" }}>
-          <span></span>
-          пост создан:
+          <span
+            style={{
+              fontWeight: "700",
+            }}
+          >
+            пост создан:
+          </span>
+
           <span
             style={{
               marginLeft: "5px",

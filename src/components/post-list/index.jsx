@@ -4,13 +4,12 @@ import { Post } from "../post";
 import { useMemo } from "react";
 
 export const PostList = ({ posts }) => {
-
   const getPostElements = () => {
     if (!posts?.length) {
       return [];
     }
 
-    return posts.map((post, index) => {
+    return posts.map((post) => {
       return (
         <Grid item key={post._id} xs={12} md={6} lg={4}>
           <Post
