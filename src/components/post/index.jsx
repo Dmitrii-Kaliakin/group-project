@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import ShareIcon from "@mui/icons-material/Share";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ru";
@@ -20,9 +21,7 @@ import cn from "classnames";
 
 const MAX_POST_TEXT_LENGTH = 100;
 
-dayjs.locale("ru");
-dayjs.extend(relativeTime);
-export const Post = ({ post, onPostLike, currentUser, createPostTime }) => {
+export const Post = ({ post, onPostLike, currentUser, createPostTime,handleDeletePost }) => {
 
   const { name, author, title, text, tags, image, likes } = post || {};
 
@@ -32,6 +31,10 @@ export const Post = ({ post, onPostLike, currentUser, createPostTime }) => {
 
   function handleClickButtonLike() {
     onPostLike(post);
+  }
+
+  function deleteCard() {
+    handleDeletePost(post);
   }
 
   return (
@@ -49,7 +52,7 @@ export const Post = ({ post, onPostLike, currentUser, createPostTime }) => {
           {text?.length > MAX_POST_TEXT_LENGTH ? text.substring(0, MAX_POST_TEXT_LENGTH) + "..." : text}
         </Typography>
       </CardContent>
-      <Stack sx={{ padding: "10px" }} direction="row" spacing={1}>
+      <Stack sx={{ padding: "10px", height: "32px" }} direction="row" spacing={1}>
         {tags?.map((tag, index) => (
           <Chip
             key={`tag_${index}`}
@@ -59,27 +62,41 @@ export const Post = ({ post, onPostLike, currentUser, createPostTime }) => {
           />
         ))}
       </Stack>
-      <CardActions style={{ position: "relative" }} disableSpacing>
-        <Card>
+      <CardActions style={{ position: "relative", marginLeft: "7px" }} disableSpacing>
+        <Card sx={{
+           display: "flex",
+           justifyContent: "center",
+           alignItems: "center",
+           boxShadow: "none",
+          }}>
           <button
             className={cn('card__favorite', { 'card__favorite_is-active': isLiked })}
             onClick={handleClickButtonLike}>
             <LikeIcon/>
             <span className={"likes-number"}>{likes?.length}</span>
           </button>
-        </Card>
-        <IconButton aria-label="share">
+          {currentUser._id === post.author._id && (
+            <IconButton
+              sx={{
+                padding: 0,
+                paddingLeft: "5px",
+              }}
+              onClick={deleteCard}
+              aria-label="delete"
+            >
+              <DeleteForeverIcon />
+            </IconButton>
+          )}
+          <IconButton aria-label="share">
           <ShareIcon/>
         </IconButton>
+        </Card>
         <div style={{ position: "absolute", right: "20px" }}>
-          <span></span>
-          пост создан:
-          <span
-            style={{
-              marginLeft: "5px",
-            }}
-          >
-            {dayjs(createPostTime).format("DD/MM/YYYY")}
+          <span style={{ fontWeight: "700" }}>
+            пост создан:
+          </span>
+          <span style={{ marginLeft: "5px" }}>
+          {dayjs(createPostTime).format("DD/MM/YYYY")}
           </span>
         </div>
       </CardActions>

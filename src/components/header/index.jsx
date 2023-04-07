@@ -16,7 +16,7 @@ export function Header({ handleSearchInputChange, handleSearchSubmit, user, onUp
   };
 
   const handleClickButtonEdit = () => {
-    onUpdateUser({ name: 'Вася', about: 'Ментор' });
+    onUpdateUser({ name: "Алексей Безмощук", about: "Писатель" });
   };
 
   return (

@@ -66,6 +66,18 @@ export function App() {
       });
   }
 
+  const handleDeletePost = (post) => {
+    if (window.confirm("Подтвердите удаление поста")) {
+      setIsLoading(true);
+      postApi
+        .deleteById(post._id)
+        .then(handleSearchRequest)
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  };
+
   useEffect(() => {
     handleSearchRequest();
   }, [debouncedSearchQuery]);
@@ -93,7 +105,7 @@ export function App() {
           <WelcomeCard createPost={createPost}/>
           {isLoading
             ? <Spinner/>
-            : <PostList posts={posts} onPostLike={handlePostLike} currentUser={currentUser}/>}
+            : <PostList posts={posts} onPostLike={handlePostLike} currentUser={currentUser} handleDeletePost={handleDeletePost}/>}
         </StyledMainContainer>
         <Footer/>
       </SearchContext.Provider>
