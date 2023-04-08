@@ -1,70 +1,51 @@
-# Getting Started with Create React App
+# Групповой проект 1.2: Работа с сетью
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+Необходимо реализовать работу проекта с API.
+На данный момент необходимо реализовать. 
+1. Загрузка информации о пользователе с сервера (разобрано на вебинаре на примере товаров) 
+2. Загрузка постов с сервера (разобрано на вебинаре) 
+3. Отображение количества лайков постов   
+4. Удаления поста  (создать свой пост можете через Postman или swagger, удалять можно только свои посты) 
+5. Постановка и снятие лайка  (разобрано на вебинаре)
 
-In the project directory, you can run:
+Список эндпоинтов, которые вы можете использовать можно посмотреть по ссылке https://www.notion.so/API-f359059dee014b448955eab8c5b13062?pvs=4
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+______________________________________________________________________________________
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+# Работа с Git и репозиторием
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Необходимо развернуть проект в своем редакторе VS Code
+2. Переключиться на свою ветку " git checkout имя-ветки " (Dmitrii, Lidia, Egor, Alik)
+3. Работать в своей ветке и при необходимости выполнить пункт *Слияние веток
+4. Ветка - "черновик", находится под именем developer, в неё будем делать слияния. Ветка master для чистового варианта в нее зальем из developer перед проверкой
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Слияние веток:
 
-### `npm run eject`
+Если мы хотим залить изменения из "своей" ветки (фичи) в основную то нужно:
+1. Переключаемся на основную ветку git checkout develop
+2. Находясь в основной ветке выполняем команду слияния указывая из какой ветки мы хотим добавить изменения подставив в команду своё имя ветки, например git merge Dmitrii
+3. Если мы хотим залить изменения в ветку с фичей (обратная операция), то переключаемся на ветку с фичей git checkout Dmitrii и выполняем команду git merge develop
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Удаление ветки:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. Если после слияния фичи с основной веткой она нам больше не нужна то мы можем сделать команду удаления ветки подставив в команду своё имя ветки, например git branch -d Dmitrii
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Отправка комита:
 
-## Learn More
+1. Проверка новых изменений в локальном репозитории перед отправкой git status
+2. Если есть новые изменение пишем команду git add --all
+3. Добавляем комит с информацией об изменениях git commit -m "Добавление функционала" 
+4. Запушить на Github командой git push
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
