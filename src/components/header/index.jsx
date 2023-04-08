@@ -1,11 +1,13 @@
 import { Logo } from '../logo';
 import { Profile } from '../profile';
-import { AppBar, Box, Toolbar } from '@mui/material';
+import { SearchBar } from '../search';
+import { AppBar, Avatar, Box, Toolbar } from '@mui/material';
 
 import './styles.css';
 
-export function Header() {
+export function Header({ handleSearchInputChange, handleSearchSubmit, user, onUpdateUser }) {
 
+  const userAvatar = <Avatar src={user?.avatar} alt={""}/>;
   const toolbar = {
     width: 1150,
     display: 'flex',
@@ -13,12 +15,17 @@ export function Header() {
     alignItems: 'center',
   };
 
+  const handleClickButtonEdit = () => {
+    onUpdateUser({ name: "Алексей Безмощук", about: "Писатель" });
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
       <AppBar sx={{ alignItems: 'center', background: 'white' }} component="nav">
         <Toolbar sx={toolbar}>
           <Logo/>
-          <Profile/>
+          <SearchBar handleInputChange={handleSearchInputChange} handleSubmit={handleSearchSubmit}/>
+          <Profile user={user} userAvatar={userAvatar} handleClick={handleClickButtonEdit}/>
         </Toolbar>
       </AppBar>
       <Toolbar/>

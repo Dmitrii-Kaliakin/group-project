@@ -10,18 +10,37 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
+import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ru";
 import "./styles.css";
+import { ReactComponent as LikeIcon } from "../../images/save.svg";
+import cn from "classnames";
 
-dayjs.locale("ru");
-dayjs.extend(relativeTime);
-export const Post = ({ text, author, img, tags, createPostTime }) => {
-  const avatar = <Avatar src={author?.avatar} alt={""} />;
-  const actionIcon = <IconButton aria-label={"settings"}></IconButton>;
+const MAX_POST_TEXT_LENGTH = 100;
+
+export const Post = ({ post, onPostLike, currentUser, createPostTime, handleDeletePost }) => {
+
+  const { name, author, title, text, tags, image, likes } = post || {};
+
+  const isPostMine = currentUser._id === post.author._id;
+
+  const avatar = <Avatar src={author?.avatar} alt={""}/>;
+  const actionIcon =
+    <IconButton aria-label="settings">
+      <MoreVertIcon/>
+    </IconButton>;
+  const isLiked = post.likes?.some(i => i === currentUser?._id);
+
+  function handleClickButtonLike() {
+    onPostLike(post);
+  }
+
+  function deleteCard() {
+    handleDeletePost(post);
+  }
 
   return (
     <Card sx={{ minWidth: 250, height: "100%" }}>
@@ -29,15 +48,16 @@ export const Post = ({ text, author, img, tags, createPostTime }) => {
         avatar={avatar}
         action={actionIcon}
         title={author?.name}
-        subheader={author?.about}
+        subheader={`${author?.about} | ${dayjs(createPostTime).format("DD/MM/YYYY")}`}
       />
-      <CardMedia component={"img"} height={"194"} image={img} alt={"img"} />
-      <CardContent style={{ height: "60px" }}>
+      <CardMedia component={"img"} height={"194"} image={image} alt={"img"}/>
+      <CardContent style={{ height: "100px" }}>
         <Typography variant={"body2"} color={"text.secondary"}>
-          {text}
+          {title}<br/><br/>
+          {text?.length > MAX_POST_TEXT_LENGTH ? text.substring(0, MAX_POST_TEXT_LENGTH) + "..." : text}
         </Typography>
       </CardContent>
-      <Stack sx={{ padding: "10px" }} direction="row" spacing={1}>
+      <Stack sx={{ padding: "10px", height: "32px" }} direction="row" spacing={1}>
         {tags?.map((tag, index) => (
           <Chip
             key={`tag_${index}`}
@@ -47,24 +67,36 @@ export const Post = ({ text, author, img, tags, createPostTime }) => {
           />
         ))}
       </Stack>
-      <CardActions style={{ position: "relative" }} disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
-        <div style={{ position: "absolute", right: "20px" }}>
-          <span></span>
-          пост создан:
-          <span
-            style={{
-              marginLeft: "5px",
-            }}
-          >
-            {dayjs(createPostTime).format("DD/MM/YYYY")}
-          </span>
-        </div>
+      <CardActions style={{ position: "relative", marginLeft: "7px" }} disableSpacing>
+        <Card sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          boxShadow: "none",
+        }}>
+          <IconButton size={"small"}
+                      className={cn("card__favorite", {
+                        "card__favorite_is-active": isLiked,
+                        "card__has-likes": likes?.length
+                      })}
+                      onClick={handleClickButtonLike}>
+            <LikeIcon/>
+            <span className={"likes-number"}>{likes?.length}</span>
+          </IconButton>
+
+          <IconButton size={"small"}
+                      aria-label="share">
+            <QuestionAnswerIcon/>
+          </IconButton>
+
+          {isPostMine &&
+            <IconButton onClick={deleteCard}
+                        size={"small"}
+                        aria-label="share">
+              <DeleteOutlineIcon sx={{ color: "#757579" }} aria-label="delete"/>
+            </IconButton>
+          }
+        </Card>
       </CardActions>
     </Card>
   );
