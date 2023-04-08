@@ -1,6 +1,7 @@
 .likes-number {
     font-size: 20px;
     color: #757575;
+	margin: 0 2px;
 }
 
 .card {
@@ -100,9 +101,13 @@
 	cursor: pointer;
 	background: none;
 	border: none;
-	padding: 0;
 	display: flex;
 }
+
+button.card__has-likes {
+	border-radius: 20px;
+}
+
 .card__favorite svg {
 	fill: #FFFFFF;
 }
@@ -122,8 +127,6 @@
 .card__cart {
 	margin-top: auto;
 }
-
-
 
 .card__link {
 	text-decoration: none;

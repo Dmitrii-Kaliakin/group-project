@@ -10,10 +10,10 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import ShareIcon from "@mui/icons-material/Share";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ru";
 import "./styles.css";
 import { ReactComponent as LikeIcon } from "../../images/save.svg";
@@ -21,12 +21,17 @@ import cn from "classnames";
 
 const MAX_POST_TEXT_LENGTH = 100;
 
-export const Post = ({ post, onPostLike, currentUser, createPostTime,handleDeletePost }) => {
+export const Post = ({ post, onPostLike, currentUser, createPostTime, handleDeletePost }) => {
 
   const { name, author, title, text, tags, image, likes } = post || {};
 
-  const avatar = <Avatar src={author?.avatar} alt={""} />;
-  const actionIcon = <IconButton aria-label={"settings"}></IconButton>;
+  const isPostMine = currentUser._id === post.author._id;
+
+  const avatar = <Avatar src={author?.avatar} alt={""}/>;
+  const actionIcon =
+    <IconButton aria-label="settings">
+      <MoreVertIcon/>
+    </IconButton>;
   const isLiked = post.likes?.some(i => i === currentUser?._id);
 
   function handleClickButtonLike() {
@@ -43,7 +48,7 @@ export const Post = ({ post, onPostLike, currentUser, createPostTime,handleDelet
         avatar={avatar}
         action={actionIcon}
         title={author?.name}
-        subheader={author?.about}
+        subheader={`${author?.about} | ${dayjs(createPostTime).format("DD/MM/YYYY")}`}
       />
       <CardMedia component={"img"} height={"194"} image={image} alt={"img"}/>
       <CardContent style={{ height: "100px" }}>
@@ -64,41 +69,34 @@ export const Post = ({ post, onPostLike, currentUser, createPostTime,handleDelet
       </Stack>
       <CardActions style={{ position: "relative", marginLeft: "7px" }} disableSpacing>
         <Card sx={{
-           display: "flex",
-           justifyContent: "center",
-           alignItems: "center",
-           boxShadow: "none",
-          }}>
-          <button
-            className={cn('card__favorite', { 'card__favorite_is-active': isLiked })}
-            onClick={handleClickButtonLike}>
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          boxShadow: "none",
+        }}>
+          <IconButton size={"small"}
+                      className={cn("card__favorite", {
+                        "card__favorite_is-active": isLiked,
+                        "card__has-likes": likes?.length
+                      })}
+                      onClick={handleClickButtonLike}>
             <LikeIcon/>
             <span className={"likes-number"}>{likes?.length}</span>
-          </button>
-          {currentUser._id === post.author._id && (
-            <IconButton
-              sx={{
-                padding: 0,
-                paddingLeft: "5px",
-              }}
-              onClick={deleteCard}
-              aria-label="delete"
-            >
-              <DeleteForeverIcon />
+          </IconButton>
+
+          <IconButton size={"small"}
+                      aria-label="share">
+            <QuestionAnswerIcon/>
+          </IconButton>
+
+          {isPostMine &&
+            <IconButton onClick={deleteCard}
+                        size={"small"}
+                        aria-label="share">
+              <DeleteOutlineIcon sx={{ color: "#757579" }} aria-label="delete"/>
             </IconButton>
-          )}
-          <IconButton aria-label="share">
-          <ShareIcon/>
-        </IconButton>
+          }
         </Card>
-        <div style={{ position: "absolute", right: "20px" }}>
-          <span style={{ fontWeight: "700" }}>
-            пост создан:
-          </span>
-          <span style={{ marginLeft: "5px" }}>
-          {dayjs(createPostTime).format("DD/MM/YYYY")}
-          </span>
-        </div>
       </CardActions>
     </Card>
   );
