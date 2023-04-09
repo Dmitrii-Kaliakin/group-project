@@ -1,3 +1,5 @@
+import cn from "classnames";
+import "./styles.css";
 import {
   Avatar,
   Card,
@@ -14,10 +16,8 @@ import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import dayjs from "dayjs";
-import "dayjs/locale/ru";
-import "./styles.css";
 import { ReactComponent as LikeIcon } from "../../images/save.svg";
-import cn from "classnames";
+import { Link } from "react-router-dom";
 
 const MAX_POST_TEXT_LENGTH = 100;
 
@@ -50,7 +50,8 @@ export const Post = ({ post, onPostLike, currentUser, createPostTime, handleDele
         title={author?.name}
         subheader={`${author?.about} | ${dayjs(createPostTime).format("DD/MM/YYYY")}`}
       />
-      <CardMedia component={"img"} height={"194"} image={image} alt={"img"}/>
+      <Link to={`/product/${post._id}`} style={{ textDecoration: 'none' }} >
+      <CardMedia component={"img"} height={"194"} image={image} alt={"img"} />
       <CardContent style={{ height: "100px" }}>
         <Typography variant={"body2"} color={"text.secondary"}>
           {title}<br/><br/>
@@ -66,7 +67,8 @@ export const Post = ({ post, onPostLike, currentUser, createPostTime, handleDele
             variant="outlined"
           />
         ))}
-      </Stack>
+        </Stack>
+        </Link>
       <CardActions style={{ position: "relative", marginLeft: "7px" }} disableSpacing>
         <Card sx={{
           display: "flex",
@@ -96,8 +98,8 @@ export const Post = ({ post, onPostLike, currentUser, createPostTime, handleDele
               <DeleteOutlineIcon sx={{ color: "#757579" }} aria-label="delete"/>
             </IconButton>
           }
-        </Card>
+          </Card>
       </CardActions>
-    </Card>
+      </Card>
   );
 };

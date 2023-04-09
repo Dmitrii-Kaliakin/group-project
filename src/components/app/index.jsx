@@ -10,6 +10,10 @@ import { styled } from '@mui/material';
 import { SearchContext } from '../../contexts/search-context';
 import { postApi } from '../../api/posts';
 import { userApi } from '../../api/user';
+import { PostPage } from '../../pages/post-page';
+import { HomePostsPage } from '../../pages/home-posts-page';
+import { CardPost } from '../card-post';
+import { Route, Routes } from 'react-router-dom';
 
 const StyledMainContainer = styled('main')(({ theme }) => ({
   display: 'flex',
@@ -69,11 +73,10 @@ export function App() {
   const handleDeletePost = (post) => {
     if (window.confirm("Подтвердите удаление поста")) {
       setIsLoading(true);
-      postApi
-        .deleteById(post._id)
+      postApi.deleteById(post._id)
         .then(handleSearchRequest)
         .finally(() => {
-          setIsLoading(false);
+          setIsLoading(false)
         });
     }
   };
@@ -102,11 +105,11 @@ export function App() {
           handleSearchSubmit={handleSearchSubmit}
           onUpdateUser={handleUpdateUser}/>
         <StyledMainContainer>
-          <WelcomeCard createPost={createPost}/>
-          {isLoading
-            ? <Spinner/>
-            : <PostList posts={posts} onPostLike={handlePostLike} currentUser={currentUser} handleDeletePost={handleDeletePost}/>}
-        </StyledMainContainer>
+          <Routes>
+            <Route path='/' element={<HomePostsPage isLoading={isLoading} createPost={createPost} posts={posts} handlePostLike={handlePostLike} currentUser={currentUser} handleDeletePost={handleDeletePost} />} />
+            <Route path='/product/:productID' element={<PostPage />}/>
+          </Routes>
+        </StyledMainContainer >
         <Footer/>
       </SearchContext.Provider>
     </>
