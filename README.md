@@ -3,16 +3,15 @@
 
 Необходимо реализовать:
 
-- Роутинг для детальной страницы поста.
-- Реализовать компонент 404 ошибки и роутинг на него.
-- Создать контекст пользователя и использовать его в проекте.
-
-Пример сайта https://react-learning.ru/post/6431903eaa39712183bbe508
-Свагер https://api.react-learning.ru/api-docs/#/Post/post_v2__groupId__posts
-Список эндпоинтов https://www.notion.so/API-f359059dee014b448955eab8c5b13062?pvs=4
-Классрум https://classroom.google.com/c/NTg4MDgwNTU0ODc5
+1. Роутинг для детальной страницы поста.
+2. Реализовать компонент 404 ошибки и роутинг на него.
+3. Создать контекст пользователя и использовать его в проекте.
 
 
+- Пример сайта https://react-learning.ru/post/6431903eaa39712183bbe508
+- Свагер https://api.react-learning.ru/api-docs/#/Post/post_v2__groupId__posts
+- Список эндпоинтов https://www.notion.so/API-f359059dee014b448955eab8c5b13062?pvs=4
+- Классрум https://classroom.google.com/c/NTg4MDgwNTU0ODc5
 
 
 ______________________________________________________________________________________
