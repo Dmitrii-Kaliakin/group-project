@@ -3,7 +3,7 @@ import { Container, Grid } from "@mui/material";
 import { Post } from "../post";
 import { useMemo } from "react";
 
-export const PostList = ({ posts, onPostLike, currentUser, handleDeletePost, }) => {
+export const PostList = ({ posts, onPostLike, currentUser, handleDeletePost }) => {
 
   const getPostElements = () => {
     if (!posts?.length) {

@@ -3,7 +3,7 @@ import { Logo } from '../logo';
 import { Profile } from '../profile';
 import { SearchBar } from '../search';
 import { AppBar, Avatar, Box, Toolbar } from '@mui/material';
-import { Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 
 export function Header({ handleSearchInputChange, handleSearchSubmit, user, onUpdateUser }) {
 
@@ -23,7 +23,7 @@ export function Header({ handleSearchInputChange, handleSearchSubmit, user, onUp
     <Box sx={{ display: 'flex' }}>
       <AppBar sx={{ alignItems: 'center', background: 'white' }} component="nav">
         <Toolbar sx={toolbar}>
-          <Logo />
+            <Logo />
           <Routes>
              <Route path='/' element={<SearchBar handleInputChange={handleSearchInputChange} handleSubmit={handleSearchSubmit}/>} />
              <Route path='*' element={null} />

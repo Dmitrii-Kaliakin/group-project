@@ -1,26 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { postApi } from '../../api/posts';
 import { userApi } from '../../api/user';
 import { CardPost } from '../../components/card-post';
 import { Spinner } from '../../components/spinner';
 import { useParams } from 'react-router-dom';
+import { PostsContext } from '../../contexts/post-context';
 
-export function PostPage() {
+export function PostPage({ currentUser, onPostLike, handleDeletePost,handleSearchRequest }) {
     const { productID } = useParams()
-    console.log(productID)
     const [post, setPost] = useState(null);
-    const [currentUser, setCurrentUser] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [errorState, setErrorState] = useState(null);
-    
+    const { handlePostLike } = useContext(PostsContext)
+
+
+    function handlePagePostLike(post) {
+        handlePostLike(post).then(updatePost => {
+            setPost(updatePost)
+        });
+      }
       
     useEffect(() => {
         setIsLoading(true);
-        Promise.all([postApi.getById(productID), userApi.getCurrentUserInfo()])
-            .then(([postData, userData]) => {
-                setCurrentUser(userData);
+        postApi.getById(productID)
+            .then((postData) => {
                 setPost(postData);
-                console.log(postData)
             })
             .catch((err) => {
                 setErrorState(err)
@@ -29,11 +33,13 @@ export function PostPage() {
                 setIsLoading(false);
             })
     }, [])
+
+
+    
     
     return (
     <>
-        {isLoading ? <Spinner/> : <CardPost post={post} currentUser={currentUser} />}
+        {isLoading ? <Spinner/> : <CardPost handleSearchRequest={handleSearchRequest}  post={post} currentUser={currentUser} onPostLike={onPostLike } handlePagePostLike={handlePagePostLike} handleDeletePost={handleDeletePost} />}
     </>
     );
 };
-  

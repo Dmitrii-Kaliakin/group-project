@@ -8,6 +8,7 @@ import { Spinner } from '../spinner';
 import { PostList } from '../post-list';
 import { styled } from '@mui/material';
 import { SearchContext } from '../../contexts/search-context';
+import { PostsContext } from '../../contexts/post-context';
 import { postApi } from '../../api/posts';
 import { userApi } from '../../api/user';
 import { PostPage } from '../../pages/post-page';
@@ -57,7 +58,7 @@ export function App() {
 
   function handlePostLike(post) {
     const isLiked = post.likes.some(id => id === currentUser._id);
-    postApi.changeLikePostStatus(post._id, isLiked)
+   return postApi.changeLikePostStatus(post._id, isLiked)
       .then((newPost) => {
         const newPosts = posts.map((p) => {
 
@@ -98,6 +99,7 @@ export function App() {
 
   return (
     <>
+       <PostsContext.Provider value={{ posts, handlePostLike }}>
       <SearchContext.Provider value={searchQuery}>
         <Header
           user={currentUser}
@@ -107,11 +109,12 @@ export function App() {
         <StyledMainContainer>
           <Routes>
             <Route path='/' element={<HomePostsPage isLoading={isLoading} createPost={createPost} posts={posts} handlePostLike={handlePostLike} currentUser={currentUser} handleDeletePost={handleDeletePost} />} />
-            <Route path='/product/:productID' element={<PostPage />}/>
+            <Route path='/product/:productID' element={<PostPage handleSearchRequest={handleSearchRequest} handleDeletePost={handleDeletePost} currentUser={currentUser} createPost={createPost}  />}/>
           </Routes>
         </StyledMainContainer >
         <Footer/>
-      </SearchContext.Provider>
+        </SearchContext.Provider>
+        </PostsContext.Provider>
     </>
   );
 }
