@@ -1,7 +1,12 @@
-import { Button, Card } from '@mui/material';
+import { Avatar, Button, Card } from '@mui/material';
 import './styles.css';
+import { UserContext } from '../../contexts/user-context';
+import { useContext } from 'react';
 
-export const Profile = ({ user, userAvatar, handleClick }) => {
+export const Profile = ({ handleClick }) => {
+
+  const user = useContext(UserContext);
+  const userAvatar = <Avatar src={user?.avatar} alt={""}/>;
 
   return <div className={'profile'}>
     <Card sx={{ display: 'flex', gap: '5px', alignItems: 'center', border: 'none', boxShadow: 'none' }}>

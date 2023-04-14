@@ -5,7 +5,6 @@ import s from "./styles.module.css";
 import { Link } from 'react-router-dom';
 export function NotFound({ children, title, buttonText = "На главную" }) {
 
-
   return (
     <div className={s.notfound}>
       <NotFoundIcon className={s.image} aria-hidden="true" />
