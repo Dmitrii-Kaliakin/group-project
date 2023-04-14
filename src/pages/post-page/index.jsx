@@ -5,6 +5,8 @@ import { CardPost } from '../../components/card-post';
 import { Spinner } from '../../components/spinner';
 import { useParams } from 'react-router-dom';
 import { PostsContext } from '../../contexts/post-context';
+import { NotFound } from "../../components/not-found";
+
 
 export function PostPage({ currentUser, onPostLike, handleDeletePost,handleSearchRequest }) {
     const { productID } = useParams()
@@ -39,7 +41,17 @@ export function PostPage({ currentUser, onPostLike, handleDeletePost,handleSearc
     
     return (
     <>
-        {isLoading ? <Spinner/> : <CardPost handleSearchRequest={handleSearchRequest}  post={post} currentUser={currentUser} onPostLike={onPostLike } handlePagePostLike={handlePagePostLike} handleDeletePost={handleDeletePost} />}
+        {isLoading 
+        ? <Spinner/> 
+        : !errorState && <CardPost 
+        handleSearchRequest={handleSearchRequest}  
+        post={post} currentUser={currentUser} 
+        onPostLike={onPostLike } 
+        handlePagePostLike={handlePagePostLike} 
+        handleDeletePost={handleDeletePost} />
+        }
+
+        {!isLoading && errorState && <NotFound title="Страница не найдена" />}
     </>
     );
 };

@@ -15,6 +15,8 @@ import { PostPage } from '../../pages/post-page';
 import { HomePostsPage } from '../../pages/home-posts-page';
 import { CardPost } from '../card-post';
 import { Route, Routes } from 'react-router-dom';
+import { NotFoundPage } from '../../pages/not-found-page';
+
 
 const StyledMainContainer = styled('main')(({ theme }) => ({
   display: 'flex',
@@ -110,6 +112,7 @@ export function App() {
           <Routes>
             <Route path='/' element={<HomePostsPage isLoading={isLoading} createPost={createPost} posts={posts} handlePostLike={handlePostLike} currentUser={currentUser} handleDeletePost={handleDeletePost} />} />
             <Route path='/product/:productID' element={<PostPage handleSearchRequest={handleSearchRequest} handleDeletePost={handleDeletePost} currentUser={currentUser} createPost={createPost}  />}/>
+            <Route path='*' element={<NotFoundPage />} />
           </Routes>
         </StyledMainContainer >
         <Footer/>
