@@ -2,12 +2,11 @@ import './styles.css';
 import { Logo } from '../logo';
 import { Profile } from '../profile';
 import { SearchBar } from '../search';
-import { AppBar, Avatar, Box, Toolbar } from '@mui/material';
-import { Link, Route, Routes } from 'react-router-dom';
+import { AppBar, Box, Toolbar } from '@mui/material';
+import { Route, Routes } from 'react-router-dom';
 
-export function Header({ handleSearchInputChange, handleSearchSubmit, user, onUpdateUser }) {
+export function Header({ handleSearchInputChange, handleSearchSubmit, onUpdateUser }) {
 
-  const userAvatar = <Avatar src={user?.avatar} alt={""}/>;
   const toolbar = {
     width: 1150,
     display: 'flex',
@@ -23,12 +22,12 @@ export function Header({ handleSearchInputChange, handleSearchSubmit, user, onUp
     <Box sx={{ display: 'flex' }}>
       <AppBar sx={{ alignItems: 'center', background: 'white' }} component="nav">
         <Toolbar sx={toolbar}>
-            <Logo />
+          <Logo/>
           <Routes>
-             <Route path='/' element={<SearchBar handleInputChange={handleSearchInputChange} handleSubmit={handleSearchSubmit}/>} />
-             <Route path='*' element={null} />
+            <Route path='*' element={<SearchBar handleInputChange={handleSearchInputChange}
+                                                handleSubmit={handleSearchSubmit}/>}/>
           </Routes>
-          <Profile user={user} userAvatar={userAvatar} handleClick={handleClickButtonEdit}/>
+          <Profile handleClick={handleClickButtonEdit}/>
         </Toolbar>
       </AppBar>
       <Toolbar/>

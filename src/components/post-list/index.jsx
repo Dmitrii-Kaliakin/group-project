@@ -1,9 +1,12 @@
 import "./styles.css";
 import { Container, Grid } from "@mui/material";
 import { Post } from "../post";
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
+import { PostsContext } from "../../contexts/post-context";
 
-export const PostList = ({ posts, onPostLike, currentUser, handleDeletePost }) => {
+export const PostList = () => {
+
+  const { posts } = useContext(PostsContext);
 
   const getPostElements = () => {
     if (!posts?.length) {
@@ -15,9 +18,6 @@ export const PostList = ({ posts, onPostLike, currentUser, handleDeletePost }) =
         <Grid item key={post._id} xs={12} md={6} lg={4}>
           <Post
             post={post}
-            onPostLike={onPostLike}
-            currentUser={currentUser}
-            handleDeletePost={handleDeletePost}
           />
         </Grid>
       );
