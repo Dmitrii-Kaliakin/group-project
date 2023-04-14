@@ -1,3 +1,5 @@
+import cn from "classnames";
+import "./styles.css";
 import {
   Avatar,
   Card,
@@ -14,16 +16,20 @@ import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import dayjs from "dayjs";
-import "dayjs/locale/ru";
-import "./styles.css";
 import { ReactComponent as LikeIcon } from "../../images/save.svg";
-import cn from "classnames";
+import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../../contexts/user-context";
+import { PostsContext } from '../../contexts/post-context';
 
 const MAX_POST_TEXT_LENGTH = 100;
 
-export const Post = ({ post, onPostLike, currentUser, createPostTime, handleDeletePost }) => {
+export const Post = ({ post }) => {
 
-  const { name, author, title, text, tags, image, likes } = post || {};
+  const currentUser = useContext(UserContext);
+  const { handlePostLike, handleDeletePost } = useContext(PostsContext);
+
+  const { author, title, text, tags, image, likes, created_at } = post || {};
 
   const isPostMine = currentUser._id === post.author._id;
 
@@ -35,7 +41,7 @@ export const Post = ({ post, onPostLike, currentUser, createPostTime, handleDele
   const isLiked = post.likes?.some(i => i === currentUser?._id);
 
   function handleClickButtonLike() {
-    onPostLike(post);
+    handlePostLike(post);
   }
 
   function deleteCard() {
@@ -48,25 +54,27 @@ export const Post = ({ post, onPostLike, currentUser, createPostTime, handleDele
         avatar={avatar}
         action={actionIcon}
         title={author?.name}
-        subheader={`${author?.about} | ${dayjs(createPostTime).format("DD/MM/YYYY")}`}
+        subheader={`${author?.about} | ${dayjs(created_at).format("DD/MM/YYYY")}`}
       />
-      <CardMedia component={"img"} height={"194"} image={image} alt={"img"}/>
-      <CardContent style={{ height: "100px" }}>
-        <Typography variant={"body2"} color={"text.secondary"}>
-          {title}<br/><br/>
-          {text?.length > MAX_POST_TEXT_LENGTH ? text.substring(0, MAX_POST_TEXT_LENGTH) + "..." : text}
-        </Typography>
-      </CardContent>
-      <Stack sx={{ padding: "10px", height: "32px" }} direction="row" spacing={1}>
-        {tags?.map((tag, index) => (
-          <Chip
-            key={`tag_${index}`}
-            label={tag}
-            color={"info"}
-            variant="outlined"
-          />
-        ))}
-      </Stack>
+      <Link to={`/product/${post._id}`} style={{ textDecoration: 'none' }}>
+        <CardMedia component={"img"} height={"194"} image={image} alt={"img"}/>
+        <CardContent style={{ height: "100px" }}>
+          <Typography variant={"body2"} color={"text.secondary"}>
+            {title}<br/><br/>
+            {text?.length > MAX_POST_TEXT_LENGTH ? text.substring(0, MAX_POST_TEXT_LENGTH) + "..." : text}
+          </Typography>
+        </CardContent>
+        <Stack sx={{ padding: "10px", height: "32px" }} direction="row" spacing={1}>
+          {tags?.map((tag, index) => (
+            <Chip
+              key={`tag_${index}`}
+              label={tag}
+              color={"info"}
+              variant="outlined"
+            />
+          ))}
+        </Stack>
+      </Link>
       <CardActions style={{ position: "relative", marginLeft: "7px" }} disableSpacing>
         <Card sx={{
           display: "flex",

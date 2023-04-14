@@ -1,15 +1,18 @@
 import { Header } from '../header';
 import { Footer } from '../footer';
 import './styles.css';
-import { WelcomeCard } from '../welcome-card';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from '../../hooks/decompouse';
-import { Spinner } from '../spinner';
-import { PostList } from '../post-list';
 import { styled } from '@mui/material';
 import { SearchContext } from '../../contexts/search-context';
+import { PostsContext } from '../../contexts/post-context';
 import { postApi } from '../../api/posts';
 import { userApi } from '../../api/user';
+import { PostPage } from '../../pages/post-page';
+import { HomePostsPage } from '../../pages/home-posts-page';
+import { Route, Routes } from 'react-router-dom';
+import { NotFoundPage } from '../../pages/not-found-page';
+import { UserContext } from '../../contexts/user-context';
 
 const StyledMainContainer = styled('main')(({ theme }) => ({
   display: 'flex',
@@ -53,7 +56,7 @@ export function App() {
 
   function handlePostLike(post) {
     const isLiked = post.likes.some(id => id === currentUser._id);
-    postApi.changeLikePostStatus(post._id, isLiked)
+    return postApi.changeLikePostStatus(post._id, isLiked)
       .then((newPost) => {
         const newPosts = posts.map((p) => {
 
@@ -69,8 +72,7 @@ export function App() {
   const handleDeletePost = (post) => {
     if (window.confirm("Подтвердите удаление поста")) {
       setIsLoading(true);
-      postApi
-        .deleteById(post._id)
+      postApi.deleteById(post._id)
         .then(handleSearchRequest)
         .finally(() => {
           setIsLoading(false);
@@ -93,22 +95,28 @@ export function App() {
       .finally(() => {setIsLoading(false);});
   }, []);
 
+  const postContextDetails = useMemo(() => ({ posts, handlePostLike, createPost, handleDeletePost }), [posts]);
+
   return (
     <>
-      <SearchContext.Provider value={searchQuery}>
-        <Header
-          user={currentUser}
-          handleSearchInputChange={handleSearchInputChange}
-          handleSearchSubmit={handleSearchSubmit}
-          onUpdateUser={handleUpdateUser}/>
-        <StyledMainContainer>
-          <WelcomeCard createPost={createPost}/>
-          {isLoading
-            ? <Spinner/>
-            : <PostList posts={posts} onPostLike={handlePostLike} currentUser={currentUser} handleDeletePost={handleDeletePost}/>}
-        </StyledMainContainer>
-        <Footer/>
-      </SearchContext.Provider>
+      <UserContext.Provider value={currentUser}>
+        <PostsContext.Provider value={postContextDetails}>
+          <SearchContext.Provider value={searchQuery}>
+            <Header
+              handleSearchInputChange={handleSearchInputChange}
+              handleSearchSubmit={handleSearchSubmit}
+              onUpdateUser={handleUpdateUser}/>
+            <StyledMainContainer>
+              <Routes>
+                <Route path='/' element={<HomePostsPage isLoading={isLoading}/>}/>
+                <Route path='/product/:productID' element={<PostPage handleSearchRequest={handleSearchRequest}/>}/>
+                <Route path='*' element={<NotFoundPage/>}/>
+              </Routes>
+            </StyledMainContainer>
+            <Footer/>
+          </SearchContext.Provider>
+        </PostsContext.Provider>
+      </UserContext.Provider>
     </>
   );
 }
