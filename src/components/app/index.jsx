@@ -54,8 +54,15 @@ export function App() {
 
 
   const updatePost = ( dataUpdateForm) => {
-    console.log(dataUpdateForm)
-
+    postApi.updateById(dataUpdateForm.id, { ...dataUpdateForm }).then(data => {
+      setPosts(prevState => prevState.map(post => {
+        if (post._id === dataUpdateForm.id) {
+          return data;
+        }
+        return post;
+      }));
+      onCloseRoutingModal();
+    });
 
   };
 
@@ -155,8 +162,8 @@ export function App() {
               } />
 
               <Route path='/post/edit/:id' element={
-                <Modal isOpen onClose={closeModal}>
-                  <EditPost onSubmit={updatePost} onClose={closeModal}/>
+                <Modal isOpen onClose={onCloseRoutingModal}>
+                  <EditPost onSubmit={updatePost} onClose={onCloseRoutingModal}/>
                 </Modal>
               }/>
             </Routes>}
