@@ -1,17 +1,36 @@
+// import './styles.css';
+// import { Button, Card, CardContent, CardHeader, Container } from '@mui/material';
+// import { useContext } from 'react';
+// import { PostsContext } from '../../contexts/post-context';
+
+// export const WelcomeCard = () => {
+
+//   const { createPost } = useContext(PostsContext);
+
+//   return <Container maxWidth={'lg'} sx={{marginTop: '20px'}}>
+//     <Card>
+//       <CardHeader title={'Добро пожаловать'}/>
+//       <CardContent>
+//         <Button onClick={createPost}>Создать пост</Button>
+//       </CardContent>
+//     </Card>
+//   </Container>;
+// };
 import './styles.css';
 import { Button, Card, CardContent, CardHeader, Container } from '@mui/material';
-import { useContext } from 'react';
-import { PostsContext } from '../../contexts/post-context';
+import { Link, useLocation } from 'react-router-dom';
 
 export const WelcomeCard = () => {
 
-  const { createPost } = useContext(PostsContext);
+  const location = useLocation();
 
-  return <Container maxWidth={'lg'} sx={{marginTop: '20px'}}>
+  return <Container maxWidth={'lg'} sx={{ marginTop: '20px' }}>
     <Card>
       <CardHeader title={'Добро пожаловать'}/>
       <CardContent>
-        <Button onClick={createPost}>Создать пост</Button>
+        <Link to="/post/new" replace state={{ backgroundLocation: location, initialPath: location.pathname }}>
+          <Button>Создать пост</Button>
+        </Link>
       </CardContent>
     </Card>
   </Container>;

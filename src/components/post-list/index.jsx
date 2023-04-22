@@ -35,7 +35,6 @@ export const PostList = () => {
       <Grid container spacing={2}>
         {postElements}
       </Grid>
-
     </Container>
   );
 };
