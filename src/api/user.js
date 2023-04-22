@@ -10,11 +10,11 @@ class UserApi extends Api {
     return fetch(`${this.endpoint}/me`, { headers: this.headers }).then(this._handleRequest);
   }
 
-  setUserInfo({ name, about }) {
+  setUserInfo({ name, about, avatar }) {
     return fetch(`${this.endpoint}/me`, {
       method: 'PATCH',
       headers: this.headers,
-      body: JSON.stringify({ name, about })
+      body: JSON.stringify({ name, about, avatar })
     })
       .then(this._handleRequest);
   }

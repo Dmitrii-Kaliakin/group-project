@@ -3,8 +3,10 @@ import { Container, Grid } from "@mui/material";
 import { Post } from "../post";
 import { useContext, useMemo } from "react";
 import { PostsContext } from "../../contexts/post-context";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 export const PostList = () => {
+  const location = useLocation();
 
   const { posts } = useContext(PostsContext);
 
@@ -18,7 +20,7 @@ export const PostList = () => {
         <Grid item key={post._id} xs={12} md={6} lg={4}>
           <Post
             post={post}
-          />
+            />
         </Grid>
       );
     });
@@ -33,9 +35,8 @@ export const PostList = () => {
       sx={{ display: "grid" }}
     >
       <Grid container spacing={2}>
-        {postElements}
+          {postElements}
       </Grid>
-
     </Container>
   );
 };

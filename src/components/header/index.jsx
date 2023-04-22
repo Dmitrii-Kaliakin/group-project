@@ -5,17 +5,13 @@ import { SearchBar } from '../search';
 import { AppBar, Box, Toolbar } from '@mui/material';
 import { Route, Routes } from 'react-router-dom';
 
-export function Header({ handleSearchInputChange, handleSearchSubmit, onUpdateUser }) {
+export function Header({ handleSearchInputChange, handleSearchSubmit}) {
 
   const toolbar = {
     width: 1150,
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-  };
-
-  const handleClickButtonEdit = () => {
-    onUpdateUser({ name: "Алексей Безмощук", about: "Писатель" });
   };
 
   return (
@@ -27,7 +23,7 @@ export function Header({ handleSearchInputChange, handleSearchSubmit, onUpdateUs
             <Route path='*' element={<SearchBar handleInputChange={handleSearchInputChange}
                                                 handleSubmit={handleSearchSubmit}/>}/>
           </Routes>
-          <Profile handleClick={handleClickButtonEdit}/>
+          <Profile />
         </Toolbar>
       </AppBar>
       <Toolbar/>

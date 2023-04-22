@@ -10,9 +10,13 @@ import { postApi } from '../../api/posts';
 import { userApi } from '../../api/user';
 import { PostPage } from '../../pages/post-page';
 import { HomePostsPage } from '../../pages/home-posts-page';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { NotFoundPage } from '../../pages/not-found-page';
 import { UserContext } from '../../contexts/user-context';
+import { Modal } from '../modal';
+import EditProfileInfo from '../edit-profile-info';
+import { NewPost } from '../new-post';
+import { EditPost } from '../edit-post';
 
 const StyledMainContainer = styled('main')(({ theme }) => ({
   display: 'flex',
@@ -29,8 +33,37 @@ export function App() {
 
   const debouncedSearchQuery = useDebounce(searchQuery, 1000);
 
-  const createPost = () => {
-    console.log('Есть контакт');
+  const navigate = useNavigate();
+
+  const location = useLocation();
+
+  const backgroundLocation = location.state?.backgroundLocation;
+
+  const initialPath = location.state?.initialPath;
+
+  const onCloseRoutingModal = () => {
+    navigate(initialPath || '/', { replace: true })
+  }
+
+  const createPost = (dataForm) => {
+    postApi.createOne({ ...dataForm, isPublished: true }).then(data => {
+      setPosts(prevState => [data, ...prevState]);
+      onCloseRoutingModal();
+    });
+  };
+
+
+  const updatePost = ( dataUpdateForm) => {
+    postApi.updateById(dataUpdateForm.id, { ...dataUpdateForm }).then(data => {
+      setPosts(prevState => prevState.map(post => {
+        if (post._id === dataUpdateForm.id) {
+          return data;
+        }
+        return post;
+      }));
+      onCloseRoutingModal();
+    });
+
   };
 
   const handleSearchRequest = () => {
@@ -51,6 +84,7 @@ export function App() {
     userApi.setUserInfo(dataUserUpdate)
       .then((updateUserFromServer) => {
         setCurrentUser(updateUserFromServer);
+        onCloseRoutingModal();
       });
   }
 
@@ -92,10 +126,10 @@ export function App() {
         setPosts(postsData);
       })
       .catch(err => console.log(err))
-      .finally(() => {setIsLoading(false);});
+      .finally(() => { setIsLoading(false); });
   }, []);
 
-  const postContextDetails = useMemo(() => ({ posts, handlePostLike, createPost, handleDeletePost }), [posts]);
+  const postContextDetails = useMemo(() => ({ updatePost, posts, handlePostLike, createPost, handleDeletePost}), [posts]);
 
   return (
     <>
@@ -105,15 +139,34 @@ export function App() {
             <Header
               handleSearchInputChange={handleSearchInputChange}
               handleSearchSubmit={handleSearchSubmit}
-              onUpdateUser={handleUpdateUser}/>
+              onUpdateUser={handleUpdateUser}
+            />
             <StyledMainContainer>
-              <Routes>
-                <Route path='/' element={<HomePostsPage isLoading={isLoading}/>}/>
-                <Route path='/product/:productID' element={<PostPage handleSearchRequest={handleSearchRequest}/>}/>
-                <Route path='*' element={<NotFoundPage/>}/>
+              <Routes location={(backgroundLocation && { ...backgroundLocation, pathname: initialPath }) || location}>
+                <Route path='/' element={<HomePostsPage isLoading={isLoading} />} />
+                <Route path='/product/:productID' element={<PostPage handleSearchRequest={handleSearchRequest} />} />
+                <Route path='*' element={<NotFoundPage />} />
               </Routes>
             </StyledMainContainer>
-            <Footer/>
+            <Footer />
+            {backgroundLocation && <Routes>
+              <Route path='/profile/edit' element={
+                <Modal isOpen onClose={onCloseRoutingModal}>
+                  <EditProfileInfo onUpdateUser={handleUpdateUser} onClose={onCloseRoutingModal} />
+                </Modal>
+              } />
+              <Route path='/post/new' element={
+                <Modal isOpen onClose={onCloseRoutingModal}>
+                  <NewPost onSubmit={createPost} onClose={onCloseRoutingModal} />
+                </Modal>
+              } />
+
+              <Route path='/post/edit/:id' element={
+                <Modal isOpen onClose={onCloseRoutingModal}>
+                  <EditPost onSubmit={updatePost} onClose={onCloseRoutingModal}/>
+                </Modal>
+              }/>
+            </Routes>}
           </SearchContext.Provider>
         </PostsContext.Provider>
       </UserContext.Provider>
