@@ -1,0 +1,14 @@
+.link {
+    cursor: pointer;
+    text-align: right;
+    align-self: flex-end;
+}
+
+.label {
+    align-self: flex-start;
+
+}
+.avatar_image {
+    display: block;
+    margin: auto;
+}
