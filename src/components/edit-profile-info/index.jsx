@@ -7,7 +7,7 @@ import { FormInput } from '../form-components/input';
 import { Avatar, Button } from '@mui/material';
 import { FormFooter } from '../form-components/footer';
 
-function Login({ onUpdateUser, onClose }) {
+function EditProfileInfo({ onUpdateUser, onClose }) {
     const { register, handleSubmit, formState: { errors } } = useForm({ mode: "onBlur" })
     const currentUser = useContext(UserContext);
     const onCancel = (e) => {
@@ -90,4 +90,4 @@ function Login({ onUpdateUser, onClose }) {
     );
 }
 
-export default Login;
+export default EditProfileInfo;

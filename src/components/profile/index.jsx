@@ -21,7 +21,7 @@ export const Profile = ({ handleClick }) => {
         </div>
         <div className={'profile__email'}>{user?.email}</div>
       </div>
-      <Link to='/login' style= {{paddingLeft: "10px"}} replace state={{backgroundLocation: location, initialPath: location.pathname}}>      
+      <Link to='/profile/edit' style= {{paddingLeft: "10px"}} replace state={{backgroundLocation: location, initialPath: location.pathname}}>
       <Button 
       onClick={handleClick}
       >

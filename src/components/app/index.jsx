@@ -14,6 +14,7 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { NotFoundPage } from '../../pages/not-found-page';
 import { UserContext } from '../../contexts/user-context';
 import { Modal } from '../modal';
+import EditProfileInfo from '../edit-profile-info';
 import { NewPost } from '../new-post';
 
 const StyledMainContainer = styled('main')(({ theme }) => ({
@@ -68,6 +69,7 @@ export function App() {
     userApi.setUserInfo(dataUserUpdate)
       .then((updateUserFromServer) => {
         setCurrentUser(updateUserFromServer);
+        onCloseRoutingModal();
       });
   }
 
@@ -133,9 +135,9 @@ export function App() {
             </StyledMainContainer>
             <Footer />
             {backgroundLocation && <Routes>
-              <Route path='/login' element={
+              <Route path='/profile/edit' element={
                 <Modal isOpen onClose={onCloseRoutingModal}>
-                  <Login onUpdateUser={handleUpdateUser} onClose={onCloseRoutingModal} />
+                  <EditProfileInfo onUpdateUser={handleUpdateUser} onClose={onCloseRoutingModal} />
                 </Modal>
               } />
               <Route path='/post/new' element={
