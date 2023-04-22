@@ -14,7 +14,6 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { NotFoundPage } from '../../pages/not-found-page';
 import { UserContext } from '../../contexts/user-context';
 import { Modal } from '../modal';
-import Login from '../login';
 import { NewPost } from '../new-post';
 
 const StyledMainContainer = styled('main')(({ theme }) => ({

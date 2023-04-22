@@ -14,10 +14,10 @@ export const Modal = ({ children, isOpen, onClose }) => {
     }
 
     return <div ref={refModal}
-      className={cn('modal', { 'modal-active': isOpen })}
-      onMouseDown={onClose}>
+                className={cn('modal', { 'modal-active': isOpen })}
+                onMouseDown={onClose}>
       <div className={cn('modal__content', { 'modal__content-active': isOpen })}
-        onMouseDown={(e) => e.stopPropagation()}>
+           onMouseDown={(e) => e.stopPropagation()}>
         {children}
       </div>
     </div>;
