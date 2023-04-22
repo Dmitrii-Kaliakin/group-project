@@ -14,11 +14,12 @@ import {
   Stack,
   Typography
 } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import dayjs from "dayjs";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import EditNoteIcon from '@mui/icons-material/EditNote';
 import { ReactComponent as LikeIcon } from "../../images/save.svg";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/user-context";
@@ -26,8 +27,10 @@ import { PostsContext } from '../../contexts/post-context';
 
 export function CardPost({ post, handlePagePostLike }) {
 
+  const location = useLocation();
+
   const currentUser = useContext(UserContext);
-  const { handleDeletePost } = useContext(PostsContext);
+  const { handleDeletePost, handleEditPost } = useContext(PostsContext);
 
   const navigate = useNavigate();
   const { author, title, text, tags, image, likes = [], created_at } = post || {};
@@ -44,6 +47,7 @@ export function CardPost({ post, handlePagePostLike }) {
     handleDeletePost(post);
     navigate(-1);
   }
+ 
 
   return (
     <Container sx={{ padding: '20px', margin: '0, auto' }} maxWidth="md">
@@ -57,7 +61,7 @@ export function CardPost({ post, handlePagePostLike }) {
           sx={{ height: 'auto', padding: '0px', backgroundColor: 'white' }}
           direction={{ md: 'row', sm: 'row' }}
         >
-          <CardContent sx={{ padding: '0px', width: 'auto' }}>
+          <CardContent sx={{ padding: '0', width: 'auto' }}>
             <CardMedia
               height={'300px'}
               component="img"
@@ -66,21 +70,22 @@ export function CardPost({ post, handlePagePostLike }) {
             />
 
           </CardContent>
-          <CardContent sx={{ padding: '0px', backgroundColor: 'white', width: '300px' }}>
+          <CardContent sx={{ padding: '0', backgroundColor: 'white', width: 'fit-content' }}>
             <CardHeader
+              sx={{padding: "16px 16px 0px 16px"}}
               avatar={avatar}
               action={actionIcon}
               title={author?.name}
               subheader={`${author?.about} | ${dayjs(created_at).format("DD/MM/YYYY")}`}
             />
             <CardContent style={{}}>
-              <Typography variant={"body2"} color={"text.secondary"}>
+              <Typography style={{}} variant={"body2"} color={"text.secondary"}>
 
                 {title}<br/><br/>
                 {text}
               </Typography>
             </CardContent>
-            <Stack sx={{ padding: "10px", height: "32px" }} direction="row" spacing={1}>
+            <Stack sx={{ padding: "0px 16px", height: "32px" }} direction="row" spacing={1}>
               {tags?.map((tag, index) => (
                 <Chip
                   key={`tag_${index}`}
@@ -90,7 +95,7 @@ export function CardPost({ post, handlePagePostLike }) {
                 />
               ))}
             </Stack>
-            <CardActions disableSpacing>
+            <CardActions sx={{padding: "16px 16px 0px 16px"}} disableSpacing>
               <Card sx={{
                 display: "flex",
                 justifyContent: "center",
@@ -116,12 +121,22 @@ export function CardPost({ post, handlePagePostLike }) {
                 </IconButton>
 
                 {isPostMine &&
+                  <>
                   <IconButton
                     onClick={deletePost}
                     size={"small"}
                     aria-label="share">
                     <DeleteOutlineIcon sx={{ color: "#757579" }} aria-label="delete"/>
                   </IconButton>
+
+                  <Link to={`/post/edit/${post._id}`} replace state={{ backgroundLocation: location, initialPath: location.pathname, post: post }}>
+                    <IconButton 
+                              size={"small"}
+                              aria-label="edit">
+                    <EditNoteIcon sx={{ color: "#757579" }}/>
+                  </IconButton>
+                  </Link>
+                  </>
                 }
               </Card>
             </CardActions>

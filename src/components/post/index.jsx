@@ -15,9 +15,10 @@ import {
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import EditNoteIcon from '@mui/icons-material/EditNote';
 import dayjs from "dayjs";
 import { ReactComponent as LikeIcon } from "../../images/save.svg";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/user-context";
 import { PostsContext } from '../../contexts/post-context';
@@ -26,8 +27,9 @@ const MAX_POST_TEXT_LENGTH = 100;
 
 export const Post = ({ post }) => {
 
+  const location = useLocation();
   const currentUser = useContext(UserContext);
-  const { handlePostLike, handleDeletePost } = useContext(PostsContext);
+  const { handlePostLike, handleDeletePost, handleEditPost } = useContext(PostsContext);
 
   const { author, title, text, tags, image, likes, created_at } = post || {};
 
@@ -56,7 +58,7 @@ export const Post = ({ post }) => {
         title={author?.name}
         subheader={`${author?.about} | ${dayjs(created_at).format("DD/MM/YYYY")}`}
       />
-      <Link to={`/product/${post._id}`} style={{ textDecoration: 'none' }}>
+      <Link to={`/product/${post._id}`} style={{ textDecoration: "none" }}>
         <CardMedia component={"img"} height={"194"} image={image} alt={"img"}/>
         <CardContent style={{ height: "100px" }}>
           <Typography variant={"body2"} color={"text.secondary"}>
@@ -98,11 +100,21 @@ export const Post = ({ post }) => {
           </IconButton>
 
           {isPostMine &&
-            <IconButton onClick={deleteCard}
-                        size={"small"}
-                        aria-label="share">
-              <DeleteOutlineIcon sx={{ color: "#757579" }} aria-label="delete"/>
-            </IconButton>
+            <>
+              <IconButton onClick={deleteCard}
+                          size={"small"}
+                          aria-label="delete">
+                <DeleteOutlineIcon sx={{ color: "#757579" }} aria-label="delete"/>
+              </IconButton>
+
+              <Link to={`/post/edit/${post._id}`} replace state={{ backgroundLocation: location, initialPath: location?.pathname }}>
+                <IconButton
+                  size={"small"}
+                  aria-label="edit">
+                  <EditNoteIcon sx={{ color: "#757579" }}/>
+                </IconButton>
+              </Link>
+            </>
           }
         </Card>
       </CardActions>

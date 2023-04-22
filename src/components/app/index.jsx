@@ -16,6 +16,7 @@ import { UserContext } from '../../contexts/user-context';
 import { Modal } from '../modal';
 import EditProfileInfo from '../edit-profile-info';
 import { NewPost } from '../new-post';
+import { EditPost } from '../edit-post';
 
 const StyledMainContainer = styled('main')(({ theme }) => ({
   display: 'flex',
@@ -49,6 +50,20 @@ export function App() {
       setPosts(prevState => [data, ...prevState]);
       onCloseRoutingModal();
     });
+  };
+
+
+  const updatePost = ( dataUpdateForm) => {
+    postApi.updateById(dataUpdateForm.id, { ...dataUpdateForm }).then(data => {
+      setPosts(prevState => prevState.map(post => {
+        if (post._id === dataUpdateForm.id) {
+          return data;
+        }
+        return post;
+      }));
+      onCloseRoutingModal();
+    });
+
   };
 
   const handleSearchRequest = () => {
@@ -114,7 +129,7 @@ export function App() {
       .finally(() => { setIsLoading(false); });
   }, []);
 
-  const postContextDetails = useMemo(() => ({ posts, handlePostLike, createPost, handleDeletePost }), [posts]);
+  const postContextDetails = useMemo(() => ({ updatePost, posts, handlePostLike, createPost, handleDeletePost}), [posts]);
 
   return (
     <>
@@ -145,6 +160,12 @@ export function App() {
                   <NewPost onSubmit={createPost} onClose={onCloseRoutingModal} />
                 </Modal>
               } />
+
+              <Route path='/post/edit/:id' element={
+                <Modal isOpen onClose={onCloseRoutingModal}>
+                  <EditPost onSubmit={updatePost} onClose={onCloseRoutingModal}/>
+                </Modal>
+              }/>
             </Routes>}
           </SearchContext.Provider>
         </PostsContext.Provider>

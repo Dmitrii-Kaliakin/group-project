@@ -8,6 +8,7 @@ import { NotFound } from '../../components/not-found';
 
 export function PostPage({ onPostLike, handleSearchRequest }) {
   const { productID } = useParams();
+  const { posts } = useContext(PostsContext);
   const [post, setPost] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorState, setErrorState] = useState(null);
@@ -31,7 +32,7 @@ export function PostPage({ onPostLike, handleSearchRequest }) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [posts]);
 
   return (
     <>
