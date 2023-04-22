@@ -15,6 +15,7 @@ import { NotFoundPage } from '../../pages/not-found-page';
 import { UserContext } from '../../contexts/user-context';
 import { Modal } from '../modal';
 import { NewPost } from '../new-post';
+import { EditPost } from '../edit-post';
 
 const StyledMainContainer = styled('main')(({ theme }) => ({
   display: 'flex',
@@ -46,6 +47,14 @@ export function App() {
       closeModal();
     });
   };
+  
+
+  const updatePost = ( dataUpdateForm) => {
+    console.log(dataUpdateForm)
+   
+    
+  };
+ 
 
   const handleSearchRequest = () => {
     postApi.searchByQuery(debouncedSearchQuery)
@@ -109,7 +118,7 @@ export function App() {
       .finally(() => {setIsLoading(false);});
   }, []);
 
-  const postContextDetails = useMemo(() => ({ posts, handlePostLike, createPost, handleDeletePost }), [posts]);
+  const postContextDetails = useMemo(() => ({ updatePost, posts, handlePostLike, createPost, handleDeletePost}), [posts]);
 
   return (
     <>
@@ -133,9 +142,15 @@ export function App() {
                 <Modal isOpen onClose={closeModal}>
                   <NewPost onSubmit={createPost} onClose={closeModal}/>
                 </Modal>
+              } />
+              
+              <Route path='/post/edit' element={
+                <Modal isOpen onClose={closeModal}>
+                  <EditPost onSubmit={updatePost} onClose={closeModal}/>
+                </Modal>
               }/>
             </Routes>}
-          </SearchContext.Provider>
+            </SearchContext.Provider>
         </PostsContext.Provider>
       </UserContext.Provider>
     </>
