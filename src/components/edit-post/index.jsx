@@ -2,17 +2,19 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@mui/material';
 import { FormInput } from '../form-components/input';
 import { Form } from '../form-components/form';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import s from './styles.module.css';
 import { useDebounce } from '../../hooks/decompouse';
 import { FormFooter } from '../form-components/footer';
-import { useLocation } from 'react-router-dom'
+import { useParams } from 'react-router-dom';
+import { PostsContext } from '../../contexts/post-context';
 
+export const EditPost = ({ onSubmit, onClose }) => {
 
+  const { id } = useParams();
 
-export const EditPost = ({dataPost, onSubmit, onClose }) => {
-  const location = useLocation();
-  const post = location.state.post;
+  const {posts} = useContext(PostsContext);
+  const post = posts.find(post => post._id === id);
 
   const [img, setImg] = useState(post.image);
   const { register, handleSubmit, formState: { errors } } = useForm({ mode: 'onBlur' });
@@ -24,11 +26,12 @@ export const EditPost = ({dataPost, onSubmit, onClose }) => {
       setImg(e.target.value || post.image);
     }
   });
-  const titleRegister = register('title', {
-    
-  });
+  const titleRegister = register('title');
   const tagsRegister = register('tags', {
     setValueAs: value => value.split(',').map(v => v.trim())
+  });
+  register('id', {
+    value: id
   });
 
   const onCancel = (e) => {

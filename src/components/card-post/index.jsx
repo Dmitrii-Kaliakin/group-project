@@ -129,7 +129,7 @@ export function CardPost({ post, handlePagePostLike }) {
                     <DeleteOutlineIcon sx={{ color: "#757579" }} aria-label="delete"/>
                   </IconButton>
 
-                  <Link to="/post/edit" replace state={{ backgroundLocation: location, initialPath: location.pathname, post: post }}>
+                  <Link to={`/post/edit/${post._id}`} replace state={{ backgroundLocation: location, initialPath: location.pathname, post: post }}>
                     <IconButton 
                               size={"small"}
                               aria-label="edit">

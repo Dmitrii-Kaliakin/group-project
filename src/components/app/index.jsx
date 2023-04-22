@@ -144,7 +144,7 @@ export function App() {
                 </Modal>
               } />
               
-              <Route path='/post/edit' element={
+              <Route path='/post/edit/:id' element={
                 <Modal isOpen onClose={closeModal}>
                   <EditPost onSubmit={updatePost} onClose={closeModal}/>
                 </Modal>
