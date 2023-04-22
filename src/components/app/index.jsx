@@ -10,9 +10,11 @@ import { postApi } from '../../api/posts';
 import { userApi } from '../../api/user';
 import { PostPage } from '../../pages/post-page';
 import { HomePostsPage } from '../../pages/home-posts-page';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { NotFoundPage } from '../../pages/not-found-page';
 import { UserContext } from '../../contexts/user-context';
+import { Modal } from '../modal';
+import { NewPost } from '../new-post';
 
 const StyledMainContainer = styled('main')(({ theme }) => ({
   display: 'flex',
@@ -28,9 +30,21 @@ export function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   const debouncedSearchQuery = useDebounce(searchQuery, 1000);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const createPost = () => {
-    console.log('Есть контакт');
+  const backgroundLocation = location.state?.backgroundLocation;
+  const initialPath = location.state?.initialPath;
+
+  const closeModal = () => {
+    navigate(initialPath || '/', { replace: true });
+  };
+
+  const createPost = (dataForm) => {
+    postApi.createOne({ ...dataForm, isPublished: true }).then(data => {
+      setPosts(prevState => [data, ...prevState]);
+      closeModal();
+    });
   };
 
   const handleSearchRequest = () => {
@@ -107,13 +121,20 @@ export function App() {
               handleSearchSubmit={handleSearchSubmit}
               onUpdateUser={handleUpdateUser}/>
             <StyledMainContainer>
-              <Routes>
+              <Routes location={(backgroundLocation && { ...backgroundLocation, pathname: initialPath }) || location}>
                 <Route path='/' element={<HomePostsPage isLoading={isLoading}/>}/>
                 <Route path='/product/:productID' element={<PostPage handleSearchRequest={handleSearchRequest}/>}/>
                 <Route path='*' element={<NotFoundPage/>}/>
               </Routes>
             </StyledMainContainer>
             <Footer/>
+            {backgroundLocation && <Routes>
+              <Route path='/post/new' element={
+                <Modal isOpen onClose={closeModal}>
+                  <NewPost onSubmit={createPost} onClose={closeModal}/>
+                </Modal>
+              }/>
+            </Routes>}
           </SearchContext.Provider>
         </PostsContext.Provider>
       </UserContext.Provider>
