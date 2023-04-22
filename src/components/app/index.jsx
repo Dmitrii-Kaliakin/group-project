@@ -14,6 +14,7 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { NotFoundPage } from '../../pages/not-found-page';
 import { UserContext } from '../../contexts/user-context';
 import { Modal } from '../modal';
+import EditProfileInfo from '../edit-profile-info';
 import { NewPost } from '../new-post';
 
 const StyledMainContainer = styled('main')(({ theme }) => ({
@@ -30,20 +31,23 @@ export function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   const debouncedSearchQuery = useDebounce(searchQuery, 1000);
+
   const navigate = useNavigate();
+
   const location = useLocation();
 
   const backgroundLocation = location.state?.backgroundLocation;
+
   const initialPath = location.state?.initialPath;
 
-  const closeModal = () => {
-    navigate(initialPath || '/', { replace: true });
-  };
+  const onCloseRoutingModal = () => {
+    navigate(initialPath || '/', { replace: true })
+  }
 
   const createPost = (dataForm) => {
     postApi.createOne({ ...dataForm, isPublished: true }).then(data => {
       setPosts(prevState => [data, ...prevState]);
-      closeModal();
+      onCloseRoutingModal();
     });
   };
 
@@ -65,6 +69,7 @@ export function App() {
     userApi.setUserInfo(dataUserUpdate)
       .then((updateUserFromServer) => {
         setCurrentUser(updateUserFromServer);
+        onCloseRoutingModal();
       });
   }
 
@@ -106,7 +111,7 @@ export function App() {
         setPosts(postsData);
       })
       .catch(err => console.log(err))
-      .finally(() => {setIsLoading(false);});
+      .finally(() => { setIsLoading(false); });
   }, []);
 
   const postContextDetails = useMemo(() => ({ posts, handlePostLike, createPost, handleDeletePost }), [posts]);
@@ -119,21 +124,27 @@ export function App() {
             <Header
               handleSearchInputChange={handleSearchInputChange}
               handleSearchSubmit={handleSearchSubmit}
-              onUpdateUser={handleUpdateUser}/>
+              onUpdateUser={handleUpdateUser}
+            />
             <StyledMainContainer>
               <Routes location={(backgroundLocation && { ...backgroundLocation, pathname: initialPath }) || location}>
-                <Route path='/' element={<HomePostsPage isLoading={isLoading}/>}/>
-                <Route path='/product/:productID' element={<PostPage handleSearchRequest={handleSearchRequest}/>}/>
-                <Route path='*' element={<NotFoundPage/>}/>
+                <Route path='/' element={<HomePostsPage isLoading={isLoading} />} />
+                <Route path='/product/:productID' element={<PostPage handleSearchRequest={handleSearchRequest} />} />
+                <Route path='*' element={<NotFoundPage />} />
               </Routes>
             </StyledMainContainer>
-            <Footer/>
+            <Footer />
             {backgroundLocation && <Routes>
-              <Route path='/post/new' element={
-                <Modal isOpen onClose={closeModal}>
-                  <NewPost onSubmit={createPost} onClose={closeModal}/>
+              <Route path='/profile/edit' element={
+                <Modal isOpen onClose={onCloseRoutingModal}>
+                  <EditProfileInfo onUpdateUser={handleUpdateUser} onClose={onCloseRoutingModal} />
                 </Modal>
-              }/>
+              } />
+              <Route path='/post/new' element={
+                <Modal isOpen onClose={onCloseRoutingModal}>
+                  <NewPost onSubmit={createPost} onClose={onCloseRoutingModal} />
+                </Modal>
+              } />
             </Routes>}
           </SearchContext.Provider>
         </PostsContext.Provider>
