@@ -1,14 +1,9 @@
-import "./styles.css";
-import { Container, Grid } from "@mui/material";
-import { Post } from "../post";
-import { useContext, useMemo } from "react";
-import { PostsContext } from "../../contexts/post-context";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import './styles.css';
+import { Container, Grid } from '@mui/material';
+import { Post } from '../post';
+import { useMemo } from 'react';
 
-export const PostList = () => {
-  const location = useLocation();
-
-  const { posts } = useContext(PostsContext);
+export const PostList = ({ posts }) => {
 
   const getPostElements = () => {
     if (!posts?.length) {
@@ -18,9 +13,7 @@ export const PostList = () => {
     return posts.map((post) => {
       return (
         <Grid item key={post._id} xs={12} md={6} lg={4}>
-          <Post
-            post={post}
-            />
+          <Post post={post}/>
         </Grid>
       );
     });
@@ -29,13 +22,9 @@ export const PostList = () => {
   const postElements = useMemo(() => getPostElements(), [posts]);
 
   return (
-    <Container
-      className={"post-list__container"}
-      maxWidth={"lg"}
-      sx={{ display: "grid" }}
-    >
+    <Container className={'post-list__container'} maxWidth={'lg'} sx={{ display: 'grid' }}>
       <Grid container spacing={2}>
-          {postElements}
+        {postElements}
       </Grid>
     </Container>
   );
