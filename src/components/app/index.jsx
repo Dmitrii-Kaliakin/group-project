@@ -143,7 +143,7 @@ export function App() {
     createPost,
     handleDeletePost,
     isLoading,
-  }), [posts]);
+  }), [posts, isLoading]);
 
   const paginationContextDetails = useMemo(() => ({ currentPage, setCurrentPage }), [currentPage]);
 
