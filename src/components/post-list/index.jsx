@@ -1,9 +1,12 @@
 import "./styles.css";
 import { Container, Grid } from "@mui/material";
 import { Post } from "../post";
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
+import { PostsContext } from "../../contexts/post-context";
 
-export const PostList = ({ posts }) => {
+export const PostList = () => {
+  const { posts } = useContext(PostsContext);
+
   const getPostElements = () => {
     if (!posts?.length) {
       return [];
@@ -12,13 +15,7 @@ export const PostList = ({ posts }) => {
     return posts.map((post) => {
       return (
         <Grid item key={post._id} xs={12} md={6} lg={4}>
-          <Post
-            text={post.text}
-            author={post.author}
-            img={post.image}
-            tags={post.tags}
-            createPostTime={post.created_at}
-          />
+          <Post post={post} />
         </Grid>
       );
     });
@@ -35,7 +32,6 @@ export const PostList = ({ posts }) => {
       <Grid container spacing={2}>
         {postElements}
       </Grid>
-      ;
     </Container>
   );
 };

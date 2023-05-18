@@ -1,3 +1,5 @@
+import cn from "classnames";
+import "./styles.css";
 import {
   Avatar,
   Card,
@@ -10,76 +12,138 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import CommentIcon from "@mui/icons-material/Comment";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import EditNoteIcon from "@mui/icons-material/EditNote";
 import dayjs from "dayjs";
-import "./styles.css";
+import { ReactComponent as LikeIcon } from "../../images/save.svg";
+import { Link, useLocation } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../../contexts/user-context";
+import { PostsContext } from "../../contexts/post-context";
 
-const MAX_POST_TEXT_LENGTH = 130;
+const MAX_POST_TEXT_LENGTH = 100;
 
-export const Post = ({ text, author, img, tags, createPostTime, likes }) => {
+export const Post = ({ post }) => {
+  const location = useLocation();
+  const currentUser = useContext(UserContext);
+  const { handlePostLike, handleDeletePost } = useContext(PostsContext);
+
+  const { author, title, text, tags, image, likes, created_at } = post || {};
+
+  const isPostMine = currentUser._id === post.author._id;
+
   const avatar = <Avatar src={author?.avatar} alt={""} />;
-  const actionIcon = <IconButton aria-label={"settings"}></IconButton>;
+  const actionIcon = (
+    <IconButton aria-label="settings">
+      <MoreVertIcon />
+    </IconButton>
+  );
+  const isLiked = post.likes?.some((i) => i === currentUser?._id);
+
+  function handleClickButtonLike() {
+    handlePostLike(post);
+  }
+
+  function deleteCard() {
+    handleDeletePost(post);
+  }
 
   return (
     <Card sx={{ minWidth: 250, height: "100%" }}>
       <CardHeader
+        sx={{ height: 40 }}
         avatar={avatar}
         action={actionIcon}
         title={author?.name}
-        subheader={author?.about}
+        subheader={`${author?.about} | ${dayjs(created_at).format(
+          "DD/MM/YYYY"
+        )}`}
       />
-      <CardMedia component={"img"} height={"194"} image={img} alt={"img"} />
-      <CardContent style={{ height: "60px" }}>
-        <Typography variant={"body2"} color={"text.secondary"}>
-          {text?.length > MAX_POST_TEXT_LENGTH
-            ? text.substring(0, MAX_POST_TEXT_LENGTH) + "..."
-            : text}
-        </Typography>
-      </CardContent>
-      <Stack
-        sx={{ padding: "10px", height: "32px" }}
-        direction="row"
-        spacing={1}
+      <Link to={`/product/${post._id}`} style={{ textDecoration: "none" }}>
+        <CardMedia component={"img"} height={"194"} image={image} alt={"img"} />
+        <CardContent style={{ height: "100px" }}>
+          <Typography variant={"body2"} color={"text.secondary"}>
+            {title}
+            <br />
+            <br />
+            {text?.length > MAX_POST_TEXT_LENGTH
+              ? text.substring(0, MAX_POST_TEXT_LENGTH) + "..."
+              : text}
+          </Typography>
+        </CardContent>
+        <Stack
+          sx={{ padding: "10px", height: "32px" }}
+          direction="row"
+          spacing={1}
+        >
+          {tags?.map((tag, index) => (
+            <Chip
+              key={`tag_${index}`}
+              label={tag}
+              color={"info"}
+              variant="outlined"
+            />
+          ))}
+        </Stack>
+      </Link>
+      <CardActions
+        style={{ position: "relative", marginLeft: "7px" }}
+        disableSpacing
       >
-        {tags?.map((tag, index) => (
-          <Chip
-            key={`tag_${index}`}
-            label={tag}
-            color={"info"}
-            variant="outlined"
-          />
-        ))}
-      </Stack>
-      <CardActions style={{ position: "relative" }} disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <span className={"likes-number"}>{likes?.length}</span>
-        <IconButton aria-label="delete">
-          <DeleteForeverIcon />
-        </IconButton>
-        <IconButton aria-label="comments">
-          <CommentIcon />
-        </IconButton>
-        <div style={{ position: "absolute", right: "20px" }}>
-          <span
-            style={{
-              fontWeight: "700",
-            }}
+        <Card
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            boxShadow: "none",
+          }}
+        >
+          <IconButton
+            size={"small"}
+            className={cn("card__favorite", {
+              "card__favorite_is-active": isLiked,
+              "card__has-likes": likes?.length,
+            })}
+            onClick={handleClickButtonLike}
           >
-            пост создан:
-          </span>
+            <LikeIcon />
+            <span className={"likes-number"}>{likes?.length}</span>
+          </IconButton>
 
-          <span
-            style={{
-              marginLeft: "5px",
-            }}
-          >
-            {dayjs(createPostTime).format("DD/MM/YYYY")}
-          </span>
-        </div>
+          <IconButton size={"small"} aria-label="share">
+            <QuestionAnswerIcon />
+          </IconButton>
+
+          {isPostMine && (
+            <>
+              <IconButton
+                onClick={deleteCard}
+                size={"small"}
+                aria-label="delete"
+              >
+                <DeleteOutlineIcon
+                  sx={{ color: "#757579" }}
+                  aria-label="delete"
+                />
+              </IconButton>
+
+              <Link
+                to={`/post/edit/${post._id}`}
+                replace
+                state={{
+                  backgroundLocation: location,
+                  initialPath: location?.pathname,
+                }}
+              >
+                <IconButton size={"small"} aria-label="edit">
+                  <EditNoteIcon sx={{ color: "#757579" }} />
+                </IconButton>
+              </Link>
+            </>
+          )}
+        </Card>
       </CardActions>
     </Card>
   );

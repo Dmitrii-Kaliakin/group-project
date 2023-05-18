@@ -1,14 +1,14 @@
 .header {
-    display: flex;
-    justify-content: center;
-    background: white;
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  background: white;
+  width: 100%;
 }
 
 .header__wrapper {
-    width: 960px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
+  width: 960px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
 }
