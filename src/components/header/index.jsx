@@ -5,7 +5,7 @@ import { SearchBar } from '../search';
 import { AppBar, Box, Toolbar } from '@mui/material';
 import { Route, Routes } from 'react-router-dom';
 
-export function Header({ handleSearchInputChange, handleSearchSubmit}) {
+export function Header() {
 
   const toolbar = {
     width: 1150,
@@ -20,8 +20,7 @@ export function Header({ handleSearchInputChange, handleSearchSubmit}) {
         <Toolbar sx={toolbar}>
           <Logo/>
           <Routes>
-            <Route path='*' element={<SearchBar handleInputChange={handleSearchInputChange}
-                                                handleSubmit={handleSearchSubmit}/>}/>
+            <Route path='*' element={<SearchBar/>}/>
           </Routes>
           <Profile />
         </Toolbar>

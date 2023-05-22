@@ -3,12 +3,13 @@ import './styles.css';
 import { UserContext } from '../../contexts/user-context';
 import { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { SearchContext } from '../../contexts/search-context';
 
+export const Profile = () => {
 
-export const Profile = ({ handleClick }) => {
-
+  const { handleUpdateUser } = useContext(SearchContext);
   const user = useContext(UserContext);
-  const userAvatar = <Avatar src={user?.avatar} alt={""}/>;
+  const userAvatar = <Avatar src={user?.avatar} alt={''}/>;
   const location = useLocation();
 
   return <div className={'profile'}>
@@ -21,12 +22,13 @@ export const Profile = ({ handleClick }) => {
         </div>
         <div className={'profile__email'}>{user?.email}</div>
       </div>
-      <Link to='/profile/edit' style= {{paddingLeft: "10px"}} replace state={{backgroundLocation: location, initialPath: location.pathname}}>
-      <Button 
-      onClick={handleClick}
-      >
-        Изменить
-      </Button>
+      <Link to="/profile/edit"
+            style={{ paddingLeft: '10px' }}
+            replace
+            state={{ backgroundLocation: location, initialPath: location.pathname }}>
+        <Button onClick={handleUpdateUser}>
+          Изменить
+        </Button>
       </Link>
     </Card>
   </div>;
