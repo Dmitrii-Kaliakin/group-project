@@ -24,13 +24,14 @@ import { ReactComponent as LikeIcon } from "../../images/save.svg";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/user-context";
 import { PostsContext } from '../../contexts/post-context';
+import { Spinner } from '../spinner';
 
 export function CardPost({ post, handlePagePostLike }) {
 
   const location = useLocation();
 
   const currentUser = useContext(UserContext);
-  const { handleDeletePost, handleEditPost } = useContext(PostsContext);
+  const { handleDeletePost, isLoading } = useContext(PostsContext);
 
   const navigate = useNavigate();
   const { author, title, text, tags, image, likes = [], created_at } = post || {};
@@ -47,7 +48,10 @@ export function CardPost({ post, handlePagePostLike }) {
     handleDeletePost(post);
     navigate(-1);
   }
- 
+
+  if (isLoading || !post) {
+    return <Spinner></Spinner>;
+  }
 
   return (
     <Container sx={{ padding: '20px', margin: '0, auto' }} maxWidth="md">
