@@ -1,14 +1,16 @@
-.link {
-    cursor: pointer;
-    text-align: right;
-    align-self: flex-end;
-}
-
 .label {
     align-self: flex-start;
 
 }
+
 .avatar_image {
     display: block;
     margin: auto;
+}
+
+.errorMessage {
+    margin-bottom: 0;
+    font-size: 12px;
+    margin-left: 5px;
+    color: #f35151;
 }

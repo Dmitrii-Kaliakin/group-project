@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 
-export const Profile = ({ handleClick }) => {
+export const Profile = () => {
 
   const user = useContext(UserContext);
   const userAvatar = <Avatar src={user?.avatar} alt={""}/>;
@@ -13,18 +13,16 @@ export const Profile = ({ handleClick }) => {
 
   return <div className={'profile'}>
     <Card sx={{ display: 'flex', gap: '5px', alignItems: 'center', border: 'none', boxShadow: 'none' }}>
-      <div className={'profile__avatar'}>{userAvatar}</div>
+      <div>{userAvatar}</div>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <div>
-          <div className={'profile__name'}>{user?.name}</div>
+          <div>{user?.name}</div>
           <div className={'profile__about'}>{user?.about}</div>
         </div>
         <div className={'profile__email'}>{user?.email}</div>
       </div>
       <Link to='/profile/edit' style= {{paddingLeft: "10px"}} replace state={{backgroundLocation: location, initialPath: location.pathname}}>
-      <Button 
-      onClick={handleClick}
-      >
+      <Button>
         Изменить
       </Button>
       </Link>

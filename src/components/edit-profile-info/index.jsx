@@ -10,13 +10,7 @@ import { FormFooter } from '../form-components/footer';
 function EditProfileInfo({ onUpdateUser, onClose }) {
     const { register, handleSubmit, formState: { errors } } = useForm({ mode: "onBlur" })
     const currentUser = useContext(UserContext);
-    const onCancel = (e) => {
-        e.preventDefault();
-
-        if (e.key === 'Enter') {
-            return;
-        }
-
+    const onCancel = () => {
         onClose();
     };
 
@@ -42,7 +36,6 @@ function EditProfileInfo({ onUpdateUser, onClose }) {
         })
 
 
-
     return (
 
         <Form title="Профиль" handleFormSubmit={handleSubmit(onUpdateUser)}>
@@ -56,7 +49,7 @@ function EditProfileInfo({ onUpdateUser, onClose }) {
                 type="text"
                 defaultValue={currentUser?.name}
             />
-            {errors?.name && <p className="errorMessage">{errors?.name?.message}</p>}
+            {errors?.name && <p className={s.errorMessage}>{errors?.name?.message}</p>}
 
             <label htmlFor="email" className={s.label}>e-mail</label>
             <FormInput
@@ -66,7 +59,7 @@ function EditProfileInfo({ onUpdateUser, onClose }) {
                 defaultValue={currentUser?.email}
                 disabled
             />
-            {errors?.email && <p className="errorMessage">{errors?.email?.message}</p>}
+            {errors?.email && <p className={s.errorMessage}>{errors?.email?.message}</p>}
 
             <label htmlFor="about" className={s.label}>about</label>
             <FormInput
@@ -75,13 +68,14 @@ function EditProfileInfo({ onUpdateUser, onClose }) {
                 type="text"
                 defaultValue={currentUser?.about}
             />
-            {errors?.about && <p className="errorMessage">{errors?.about?.message}</p>}
+            {errors?.about && <p className={s.errorMessage}>{errors?.about?.message}</p>}
 
             <FormFooter>
                 <Button variant="outlined"
                     color="primary"
-                    onClick={onCancel}
-                    onKeyPress={(e) => e.preventDefault()}>Отмена</Button>
+                    onClick={onCancel}>
+                Отмена
+                </Button>
                 <Button type="submit" variant="contained" color="primary">Изменить</Button>
             </FormFooter>
 

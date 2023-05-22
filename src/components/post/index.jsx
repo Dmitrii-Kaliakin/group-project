@@ -29,7 +29,7 @@ export const Post = ({ post }) => {
 
   const location = useLocation();
   const currentUser = useContext(UserContext);
-  const { handlePostLike, handleDeletePost, handleEditPost , isLoading } = useContext(PostsContext);
+  const { handlePostLike, handleDeletePost, isLoading } = useContext(PostsContext);
 
   const { author, title, text, tags, image, likes, created_at } = post || {};
 
@@ -61,7 +61,7 @@ export const Post = ({ post }) => {
             title={author?.name}
             subheader={`${author?.about} | ${dayjs(created_at).format('DD/MM/YYYY')}`}
           />
-          <Link to={`/product/${post._id}`} style={{ textDecoration: 'none' }}>
+          <Link to={`/post/${post._id}`} style={{ textDecoration: 'none' }}>
             <CardMedia component={'img'} height={'194'} image={image} alt={'img'}/>
             <CardContent style={{ height: '100px' }}>
               <Typography variant={'body2'} color={'text.secondary'}>
@@ -97,8 +97,7 @@ export const Post = ({ post }) => {
                 <span className={'likes-number'}>{likes?.length}</span>
               </IconButton>
 
-              <IconButton size={'small'}
-                          aria-label="share">
+              <IconButton size={'small'}>
                 <QuestionAnswerIcon/>
               </IconButton>
 

@@ -19,40 +19,50 @@ export const NewPost = ({ onSubmit, onClose }) => {
   const imgRegister = register('image', {
     onChange: (e) => {
       setImg(e.target.value || NO_IMAGE);
+    },
+    required: {
+      value: true,
+      message: 'Обязательное поле'
     }
   });
+
   const titleRegister = register('title', {
     required: {
       value: true,
       message: 'Обязательное поле'
     }
   });
+
+  const textRegister = register('text', {
+    required: {
+      value: true,
+      message: 'Обязательное поле'
+    }
+  });
+
   const tagsRegister = register('tags', {
     setValueAs: value => value.split(',').map(v => v.trim())
   });
 
-  const onCancel = (e) => {
-    e.preventDefault();
-
-    if (e.key === 'Enter') {
-      return;
-    }
-
+  const onCancel = () => {
     onClose();
   };
 
   return <Form title="Создать пост" handleFormSubmit={handleSubmit(onSubmit)}>
     <img className={s.picture} src={debouncedImg} alt={''}/>
     <FormInput id="image" type="url" placeholder="URL картинки поста" {...imgRegister}/>
-    {errors?.title && <p className="form__error-message">{errors?.title?.message}</p>}
+    {errors?.image && <p className={s.form__error__message}>{errors?.image?.message}</p>}
     <FormInput id="title" type="text" placeholder="Заголовок поста" {...titleRegister}/>
-    <FormInput typeTag="textarea" id="postText" placeholder="Текст поста" {...register('text')}/>
+    {errors?.title && <p className={s.form__error__message}>{errors?.title?.message}</p>}
+    <FormInput typeTag="textarea" id="postText" placeholder="Текст поста" {...textRegister}/>
+    {errors?.text && <p className={s.form__error__message}>{errors?.text?.message}</p>}
     <FormInput id="tags" placeholder="Введите теги через запятую" {...tagsRegister}/>
     <FormFooter>
       <Button variant="outlined"
               color="primary"
-              onClick={onCancel}
-              onKeyPress={(e) => e.preventDefault()}>Отмена</Button>
+              onClick={onCancel}>
+      Отмена
+      </Button>
       <Button type="submit" variant="contained" color="primary">Создать</Button>
     </FormFooter>
   </Form>;
