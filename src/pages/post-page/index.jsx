@@ -7,7 +7,7 @@ import { Spinner } from "../../components/spinner";
 
 export function PostPage() {
   const { productID } = useParams();
-  const { posts, handlePostLike } = useContext(PostsContext);
+  const { posts, handlePostLike, isLoading: loadingData  } = useContext(PostsContext);
   const [post, setPost] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -27,7 +27,9 @@ export function PostPage() {
       setPost(updatePost);
     });
   }
-
+  if (loadingData || !post) {
+    return <Spinner></Spinner>;
+  }
   return (
     <>
       {isLoading ? (

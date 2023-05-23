@@ -114,6 +114,7 @@ export function App() {
   };
 
   useEffect(() => {
+    if(posts.length > 0)
     handleSearchRequest();
   }, [debouncedSearchQuery]);
 
