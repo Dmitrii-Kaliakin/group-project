@@ -11,7 +11,7 @@ export function PostPage({ handleSearchRequest }) {
   const [post, setPost] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorState, setErrorState] = useState(null);
-  const { handlePostLike, handleDeletePost } = useContext(PostsContext);
+  const { posts, handlePostLike, handleDeletePost } = useContext(PostsContext);
 
   function handlePagePostLike(post) {
     handlePostLike(post).then(updatePost => {
@@ -31,7 +31,7 @@ export function PostPage({ handleSearchRequest }) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [posts]);
 
   return (
     <>

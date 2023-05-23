@@ -153,7 +153,7 @@ export function App() {
         <PostsContext.Provider value={postContextDetails}>
           <SearchContext.Provider value={debouncedSearchQuery}>
             <PaginationContext.Provider value={paginationContextDetails}>
-              <Header onUpdateUser={handleUpdateUser}>
+              <Header>
                 <Routes location={(backgroundLocation && { ...backgroundLocation, pathname: initialPath }) || location}>
                   <Route path='/' element={
                     <>

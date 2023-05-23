@@ -11,7 +11,7 @@ export const Profile = () => {
   const userAvatar = <Avatar src={user?.avatar} alt={""}/>;
   const location = useLocation();
 
-  return <div className={'profile'}>
+  return <div>
     <Card sx={{ display: 'flex', gap: '5px', alignItems: 'center', border: 'none', boxShadow: 'none' }}>
       <div>{userAvatar}</div>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
