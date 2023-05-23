@@ -109,6 +109,7 @@ export function App() {
 
       });
   }
+
   const handleDeletePost = (post) => {
     if (window.confirm('Подтвердите удаление поста')) {
       setIsLoading(true);

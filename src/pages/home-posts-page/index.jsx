@@ -3,10 +3,16 @@ import { Spinner } from '../../components/spinner';
 import { WelcomeCard } from '../../components/welcome-card';
 import { PostsContext } from '../../contexts/post-context';
 import { useContext } from 'react';
-import { Pagination } from '@mui/material';
+import { Pagination, styled } from '@mui/material';
 import { PaginationContext } from '../../contexts/pagination-context';
 
 const POSTS_PER_PAGE = 12;
+
+const StyledPagination = styled(Pagination)(() => ({
+  '& .MuiPagination-ul .Mui-selected': {
+    backgroundColor: 'rgba(255, 255, 255, 0.8)'
+  }
+}));
 
 export function HomePostsPage() {
 
@@ -29,14 +35,14 @@ export function HomePostsPage() {
         ? <Spinner/>
         : <>
           <PostList posts={slicedPosts}/>
-          <Pagination sx={{marginBottom: '20px'}}
-                      count={totalPages}
-                      variant="outlined"
-                      page={currentPage + 1}
-                      shape="rounded"
-                      onChange={handleChange}/>
+          <StyledPagination sx={{ marginBottom: '20px' }}
+                            count={totalPages}
+                            variant="outlined"
+                            page={currentPage + 1}
+                            shape="rounded"
+                            onChange={handleChange}/>
         </>
       }
     </>
   );
-};
+}
