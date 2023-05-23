@@ -19,11 +19,18 @@ export function HomePostsPage() {
   const { currentPage, setCurrentPage } = useContext(PaginationContext) || 1;
   const { posts, isLoading } = useContext(PostsContext);
   const totalPages = Math.round(posts.length / POSTS_PER_PAGE);
+  const indexOfFirstProductOnThePage = currentPage * POSTS_PER_PAGE;
+  const indexOfLastProductOnThePage = indexOfFirstProductOnThePage + POSTS_PER_PAGE;
   const slicedPosts = currentPage === totalPages
-    ? posts.slice(currentPage * POSTS_PER_PAGE)
-    : posts.slice(currentPage * POSTS_PER_PAGE, (currentPage + 1) * POSTS_PER_PAGE);
+    ? posts.slice(indexOfFirstProductOnThePage)
+    : posts.slice(indexOfFirstProductOnThePage, indexOfLastProductOnThePage);
 
   const handleChange = (e, page) => {
+
+    if (page < 1 || page > totalPages) {
+      return;
+    }
+
     setCurrentPage(page - 1);
     window.scrollTo(0, 0);
   };
