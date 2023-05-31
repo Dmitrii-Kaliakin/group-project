@@ -1,4 +1,3 @@
-import './styles.css';
 import { Button, Card, CardContent, CardHeader, Container } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 

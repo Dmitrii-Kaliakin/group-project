@@ -6,13 +6,12 @@ import { useParams } from 'react-router-dom';
 import { PostsContext } from '../../contexts/post-context';
 import { NotFound } from '../../components/not-found';
 
-export function PostPage({ onPostLike, handleSearchRequest }) {
-  const { productID } = useParams();
-  const { posts } = useContext(PostsContext);
+export function PostPage({ handleSearchRequest }) {
+  const { postID } = useParams();
   const [post, setPost] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorState, setErrorState] = useState(null);
-  const { handlePostLike, handleDeletePost } = useContext(PostsContext);
+  const { posts, handlePostLike, handleDeletePost } = useContext(PostsContext);
 
   function handlePagePostLike(post) {
     handlePostLike(post).then(updatePost => {
@@ -22,7 +21,7 @@ export function PostPage({ onPostLike, handleSearchRequest }) {
 
   useEffect(() => {
     setIsLoading(true);
-    postApi.getById(productID)
+    postApi.getById(postID)
       .then((postData) => {
         setPost(postData);
       })
@@ -41,12 +40,11 @@ export function PostPage({ onPostLike, handleSearchRequest }) {
         : !errorState && <CardPost
         handleSearchRequest={handleSearchRequest}
         post={post}
-        onPostLike={onPostLike}
         handlePagePostLike={handlePagePostLike}
         handleDeletePost={handleDeletePost}/>
       }
 
-      {!isLoading && errorState && <NotFound title="Страница не найдена"/>}
+      {!isLoading && errorState && <NotFound title="Пост не найден"/>}
     </>
   );
 };
