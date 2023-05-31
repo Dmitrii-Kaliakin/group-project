@@ -18,6 +18,8 @@ import EditProfileInfo from '../edit-profile-info';
 import { NewPost } from '../new-post';
 import { EditPost } from '../edit-post';
 import { PaginationContext } from '../../contexts/pagination-context';
+import { Logo } from '../logo';
+import { SearchBar } from '../search';
 
 const StyledMainContainer = styled('main')(({ theme }) => ({
   display: 'flex',
@@ -148,7 +150,7 @@ export function App() {
     createPost,
     handleDeletePost,
     isLoading,
-  }), [posts, isLoading]);
+  }), [posts]);
 
   const paginationContextDetails = useMemo(() => ({ currentPage, setCurrentPage }), [currentPage]);
   const searchContextDetails = useMemo(() => ({
@@ -166,33 +168,43 @@ export function App() {
           <SearchContext.Provider value={searchContextDetails}>
             <PaginationContext.Provider value={paginationContextDetails}>
               <div ref={headerRef}>
-                <Header/>
+                <Header>
+                  <Routes location={(backgroundLocation && { ...backgroundLocation, pathname: initialPath }) || location}>
+                    <Route path='/' element={
+                      <>
+                        <Logo />
+                        <SearchBar/>
+                      </>
+                    } />
+                    <Route path='*' element={<Logo href="/" />} />
+                  </Routes>
+                </Header>
               </div>
               <StyledMainContainer>
                 <Routes location={(backgroundLocation && { ...backgroundLocation, pathname: initialPath }) || location}>
-                  <Route path="/" element={<HomePostsPage isLoading={isLoading}/>}/>
-                  <Route path="/product/:productID" element={<PostPage handleSearchRequest={handleSearchRequest}/>}/>
-                  <Route path="*" element={<NotFoundPage/>}/>
+                  <Route path="/" element={<HomePostsPage isLoading={isLoading} />} />
+                  <Route path="/post/:postID" element={<PostPage handleSearchRequest={handleSearchRequest} />} />
+                  <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </StyledMainContainer>
-              <Footer/>
+              <Footer />
               {backgroundLocation && <Routes>
                 <Route path="/profile/edit" element={
                   <Modal isOpen onClose={onCloseRoutingModal}>
-                    <EditProfileInfo onUpdateUser={handleUpdateUser} onClose={onCloseRoutingModal}/>
+                    <EditProfileInfo onUpdateUser={handleUpdateUser} onClose={onCloseRoutingModal} />
                   </Modal>
-                }/>
+                } />
                 <Route path="/post/new" element={
                   <Modal isOpen onClose={onCloseRoutingModal}>
-                    <NewPost onSubmit={createPost} onClose={onCloseRoutingModal}/>
+                    <NewPost onSubmit={createPost} onClose={onCloseRoutingModal} />
                   </Modal>
-                }/>
+                } />
 
                 <Route path="/post/edit/:id" element={
                   <Modal isOpen onClose={onCloseRoutingModal}>
-                    <EditPost onSubmit={updatePost} onClose={onCloseRoutingModal}/>
+                    <EditPost onSubmit={updatePost} onClose={onCloseRoutingModal} />
                   </Modal>
-                }/>
+                } />
               </Routes>}
             </PaginationContext.Provider>
           </SearchContext.Provider>

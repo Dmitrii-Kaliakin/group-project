@@ -1,11 +1,9 @@
-import { useRef } from 'react';
 import { createPortal } from 'react-dom';
 import cn from 'classnames';
 import './styles.css';
 
 export const Modal = ({ children, isOpen, onClose }) => {
 
-  const refModal = useRef(null);
 
   const renderContent = () => {
 
@@ -13,7 +11,7 @@ export const Modal = ({ children, isOpen, onClose }) => {
       return null;
     }
 
-    return <div ref={refModal}
+    return <div 
                 className={cn('modal', { 'modal-active': isOpen })}
                 onMouseDown={onClose}>
       <div className={cn('modal__content', { 'modal__content-active': isOpen })}

@@ -1,11 +1,7 @@
-import './styles.css';
-import { Logo } from '../logo';
 import { Profile } from '../profile';
-import { SearchBar } from '../search';
 import { AppBar, Box, Toolbar } from '@mui/material';
-import { Route, Routes } from 'react-router-dom';
 
-export function Header() {
+export function Header({ children }) {
 
   const toolbar = {
     width: 1150,
@@ -18,10 +14,7 @@ export function Header() {
     <Box sx={{ display: 'flex' }}>
       <AppBar sx={{ alignItems: 'center', background: 'white' }} component="nav">
         <Toolbar sx={toolbar}>
-          <Logo/>
-          <Routes>
-            <Route path='*' element={<SearchBar/>}/>
-          </Routes>
+          {children}
           <Profile />
         </Toolbar>
       </AppBar>
