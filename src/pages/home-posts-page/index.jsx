@@ -16,7 +16,7 @@ const StyledPagination = styled(Pagination)(() => ({
 
 export function HomePostsPage() {
 
-  const { currentPage, setCurrentPage } = useContext(PaginationContext) || 1;
+  const { currentPage, setCurrentPage } = useContext(PaginationContext);
   const { posts, isLoading } = useContext(PostsContext);
   const totalPages = Math.round(posts.length / POSTS_PER_PAGE);
   const slicedPosts = currentPage === totalPages
