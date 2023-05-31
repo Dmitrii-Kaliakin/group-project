@@ -41,39 +41,37 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const StyledInputContainer = styled('div')(({ theme }) => ({
+const StyledInputContainer = styled('div')(() => ({
   position: 'relative',
   display: 'flex',
   alignItems: 'center',
 }));
 
-const StyledCloseIcon = styled(CloseIcon)(({ theme }) => ({
+const StyledCloseIcon = styled(CloseIcon)(() => ({
   position: 'absolute',
   right: '5px',
   cursor: 'pointer',
 }));
 
-export const SearchBar = ({ handleInputChange, handleSubmit }) => {
+export const SearchBar = () => {
 
-  const searchInputRef = useRef(null);
-  const resetSearchInput = () => {
-    searchInputRef.current.querySelector('input').value = '';
-    handleInputChange('');
-  }
-
-  const searchQuery = useContext(SearchContext);
+  const {
+    handleSearchInputChange,
+    handleSearchSubmit,
+    debouncedSearchQuery: searchQuery,
+    resetSearchBar
+  } = useContext(SearchContext);
 
   return <>
     <Search>
       <SearchIconWrapper>
         <SearchIcon/>
       </SearchIconWrapper>
-      <form onSubmit={handleSubmit}>
-        <StyledInputContainer>
-          <StyledInputBase ref={searchInputRef}
-                           placeholder="Search…"
-                           onChange={(e) => handleInputChange(e.target.value?.toLowerCase())}/>
-          {searchQuery && <StyledCloseIcon onClick={resetSearchInput}/>}
+      <form onSubmit={handleSearchSubmit}>
+        <StyledInputContainer className={'search-bar'}>
+          <StyledInputBase placeholder="Search…"
+                           onChange={(e) => handleSearchInputChange(e.target.value?.toLowerCase())}/>
+          {searchQuery && <StyledCloseIcon onClick={resetSearchBar}/>}
         </StyledInputContainer>
       </form>
     </Search>

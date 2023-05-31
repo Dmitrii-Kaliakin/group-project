@@ -1,7 +1,7 @@
 import { Header } from '../header';
 import { Footer } from '../footer';
 import './styles.css';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useDebounce } from '../../hooks/decompouse';
 import { styled } from '@mui/material';
 import { SearchContext } from '../../contexts/search-context';
@@ -35,10 +35,10 @@ export function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
 
-  const debouncedSearchQuery = useDebounce(searchQuery, 1000);
+  const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
+  const headerRef = useRef(null);
   const navigate = useNavigate();
-
   const location = useLocation();
 
   const backgroundLocation = location.state?.backgroundLocation;
@@ -48,6 +48,7 @@ export function App() {
   const onCloseRoutingModal = () => {
     navigate(initialPath || '/', { replace: true });
   };
+
   const createPost = (dataForm) => {
     postApi.createOne({ ...dataForm, isPublished: true }).then(data => {
       setPosts(prevState => [data, ...prevState]);
@@ -87,6 +88,13 @@ export function App() {
     handleSearchRequest();
   };
 
+  const resetSearchBar = () => {
+    handleSearchInputChange('');
+    setTimeout(() => {
+      headerRef.current.querySelector('.search-bar input').value = '';
+    }, 0);
+  };
+
   function handleUpdateUser(dataUserUpdate) {
     userApi.setUserInfo(dataUserUpdate)
       .then((updateUserFromServer) => {
@@ -100,13 +108,11 @@ export function App() {
     return postApi.changeLikePostStatus(post._id, isLiked)
       .then((newPost) => {
         const newPosts = posts.map((p) => {
-
           return p._id === newPost._id ? newPost : p;
         });
         setPosts(newPosts);
 
         return newPost;
-
       });
   }
 
@@ -147,27 +153,33 @@ export function App() {
   }), [posts]);
 
   const paginationContextDetails = useMemo(() => ({ currentPage, setCurrentPage }), [currentPage]);
+  const searchContextDetails = useMemo(() => ({
+    debouncedSearchQuery,
+    handleSearchInputChange,
+    handleSearchSubmit,
+    handleUpdateUser,
+    resetSearchBar,
+  }), [debouncedSearchQuery]);
 
   return (
     <>
       <UserContext.Provider value={currentUser}>
         <PostsContext.Provider value={postContextDetails}>
-          <SearchContext.Provider value={debouncedSearchQuery}>
+          <SearchContext.Provider value={searchContextDetails}>
             <PaginationContext.Provider value={paginationContextDetails}>
-              <Header>
-                <Routes location={(backgroundLocation && { ...backgroundLocation, pathname: initialPath }) || location}>
-                  <Route path='/' element={
-                    <>
-                      <Logo />
-                      <SearchBar
-                        handleInputChange={handleSearchInputChange}
-                        handleSubmit={handleSearchSubmit}
-                      />
-                    </>
-                  } />
-                  <Route path='*' element={<Logo href="/" />} />
-                </Routes>
-              </Header>
+              <div ref={headerRef}>
+                <Header>
+                  <Routes location={(backgroundLocation && { ...backgroundLocation, pathname: initialPath }) || location}>
+                    <Route path='/' element={
+                      <>
+                        <Logo />
+                        <SearchBar/>
+                      </>
+                    } />
+                    <Route path='*' element={<Logo href="/" />} />
+                  </Routes>
+                </Header>
+              </div>
               <StyledMainContainer>
                 <Routes location={(backgroundLocation && { ...backgroundLocation, pathname: initialPath }) || location}>
                   <Route path="/" element={<HomePostsPage isLoading={isLoading} />} />
