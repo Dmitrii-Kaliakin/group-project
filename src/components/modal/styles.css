@@ -33,9 +33,3 @@
     transform: scale(1);
 }
 
-.form__error-message {
-    margin-bottom: 0;
-    font-size: 12px;
-    margin-left: 5px;
-    color: #f35151;
-}

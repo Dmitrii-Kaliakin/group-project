@@ -29,11 +29,11 @@ export const Post = ({ post }) => {
 
   const location = useLocation();
   const currentUser = useContext(UserContext);
-  const { handlePostLike, handleDeletePost, handleEditPost } = useContext(PostsContext);
+  const { handlePostLike, handleDeletePost, isLoading } = useContext(PostsContext);
 
   const { author, title, text, tags, image, likes, created_at } = post || {};
 
-  const isPostMine = currentUser._id === post.author._id;
+  const isPostMine = currentUser?._id === post.author._id;
 
   const avatar = <Avatar src={author?.avatar} alt={""}/>;
   const actionIcon =
@@ -51,73 +51,77 @@ export const Post = ({ post }) => {
   }
 
   return (
-    <Card sx={{ minWidth: 250, height: "100%" }}>
-      <CardHeader
-        avatar={avatar}
-        action={actionIcon}
-        title={author?.name}
-        subheader={`${author?.about} | ${dayjs(created_at).format("DD/MM/YYYY")}`}
-      />
-      <Link to={`/product/${post._id}`} style={{ textDecoration: "none" }}>
-        <CardMedia component={"img"} height={"194"} image={image} alt={"img"}/>
-        <CardContent style={{ height: "100px" }}>
-          <Typography variant={"body2"} color={"text.secondary"}>
-            {title}<br/><br/>
-            {text?.length > MAX_POST_TEXT_LENGTH ? text.substring(0, MAX_POST_TEXT_LENGTH) + "..." : text}
-          </Typography>
-        </CardContent>
-        <Stack sx={{ padding: "10px", height: "32px" }} direction="row" spacing={1}>
-          {tags?.map((tag, index) => (
-            <Chip
-              key={`tag_${index}`}
-              label={tag}
-              color={"info"}
-              variant="outlined"
-            />
-          ))}
-        </Stack>
-      </Link>
-      <CardActions style={{ position: "relative", marginLeft: "7px" }} disableSpacing>
-        <Card sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          boxShadow: "none",
-        }}>
-          <IconButton size={"small"}
-                      className={cn("card__favorite", {
-                        "card__favorite_is-active": isLiked,
-                        "card__has-likes": likes?.length
-                      })}
-                      onClick={handleClickButtonLike}>
-            <LikeIcon/>
-            <span className={"likes-number"}>{likes?.length}</span>
-          </IconButton>
-
-          <IconButton size={"small"}
-                      aria-label="share">
-            <QuestionAnswerIcon/>
-          </IconButton>
-
-          {isPostMine &&
-            <>
-              <IconButton onClick={deleteCard}
-                          size={"small"}
-                          aria-label="delete">
-                <DeleteOutlineIcon sx={{ color: "#757579" }} aria-label="delete"/>
+    <>
+      {isLoading ? <></>
+        :
+        <Card sx={{ minWidth: 250, height: '100%' }}>
+          <CardHeader
+            avatar={avatar}
+            action={actionIcon}
+            title={author?.name}
+            subheader={`${author?.about} | ${dayjs(created_at).format('DD/MM/YYYY')}`}
+          />
+          <Link to={`/post/${post._id}`} style={{ textDecoration: 'none' }}>
+            <CardMedia component={'img'} height={'194'} image={image} alt={'img'}/>
+            <CardContent style={{ height: '100px' }}>
+              <Typography variant={'body2'} color={'text.secondary'}>
+                {title}<br/><br/>
+                {text?.length > MAX_POST_TEXT_LENGTH ? text.substring(0, MAX_POST_TEXT_LENGTH) + '...' : text}
+              </Typography>
+            </CardContent>
+            <Stack sx={{ padding: '10px', height: '32px' }} direction="row" spacing={1}>
+              {tags?.map((tag, index) => (
+                <Chip
+                  key={`tag_${index}`}
+                  label={tag}
+                  color={'info'}
+                  variant="outlined"
+                />
+              ))}
+            </Stack>
+          </Link>
+          <CardActions style={{ position: 'relative', marginLeft: '7px' }} disableSpacing>
+            <Card sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              boxShadow: 'none',
+            }}>
+              <IconButton size={'small'}
+                          className={cn('card__favorite', {
+                            'card__favorite_is-active': isLiked,
+                            'card__has-likes': likes?.length
+                          })}
+                          onClick={handleClickButtonLike}>
+                <LikeIcon/>
+                <span className={'likes-number'}>{likes?.length}</span>
               </IconButton>
 
-              <Link to={`/post/edit/${post._id}`} replace state={{ backgroundLocation: location, initialPath: location?.pathname }}>
-                <IconButton
-                  size={"small"}
-                  aria-label="edit">
-                  <EditNoteIcon sx={{ color: "#757579" }}/>
-                </IconButton>
-              </Link>
-            </>
-          }
+              <IconButton size={'small'}>
+                <QuestionAnswerIcon/>
+              </IconButton>
+
+              {isPostMine &&
+                <>
+                  <IconButton onClick={deleteCard}
+                              size={'small'}
+                              aria-label="delete">
+                    <DeleteOutlineIcon sx={{ color: '#757579' }} aria-label="delete"/>
+                  </IconButton>
+
+                  <Link to={`/post/edit/${post._id}`} replace
+                        state={{ backgroundLocation: location, initialPath: location?.pathname }}>
+                    <IconButton
+                      size={'small'}
+                      aria-label="edit">
+                      <EditNoteIcon sx={{ color: '#757579' }}/>
+                    </IconButton>
+                  </Link>
+                </>
+              }
+            </Card>
+          </CardActions>
         </Card>
-      </CardActions>
-    </Card>
+      }</>
   );
 };

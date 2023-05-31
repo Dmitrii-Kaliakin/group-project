@@ -1,5 +1,5 @@
 import cn from "classnames";
-import "./styles.module.css";
+import './styles.css';
 import {
   Avatar,
   Button,
@@ -30,7 +30,7 @@ export function CardPost({ post, handlePagePostLike }) {
   const location = useLocation();
 
   const currentUser = useContext(UserContext);
-  const { handleDeletePost, handleEditPost } = useContext(PostsContext);
+  const { handleDeletePost } = useContext(PostsContext);
 
   const navigate = useNavigate();
   const { author, title, text, tags, image, likes = [], created_at } = post || {};
@@ -115,8 +115,7 @@ export function CardPost({ post, handlePagePostLike }) {
                   <span className={"likes-number"}>{likes?.length}</span>
                 </IconButton>
 
-                <IconButton size={"small"}
-                            aria-label="share">
+                <IconButton size={"small"}>
                   <QuestionAnswerIcon/>
                 </IconButton>
 
@@ -124,12 +123,11 @@ export function CardPost({ post, handlePagePostLike }) {
                   <>
                   <IconButton
                     onClick={deletePost}
-                    size={"small"}
-                    aria-label="share">
+                    size={"small"}>
                     <DeleteOutlineIcon sx={{ color: "#757579" }} aria-label="delete"/>
                   </IconButton>
 
-                  <Link to={`/post/edit/${post._id}`} replace state={{ backgroundLocation: location, initialPath: location.pathname, post: post }}>
+                  <Link to={`/post/edit/${post?._id}`} replace state={{ backgroundLocation: location, initialPath: location.pathname, post: post }}>
                     <IconButton 
                               size={"small"}
                               aria-label="edit">

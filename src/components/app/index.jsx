@@ -18,6 +18,8 @@ import EditProfileInfo from '../edit-profile-info';
 import { NewPost } from '../new-post';
 import { EditPost } from '../edit-post';
 import { PaginationContext } from '../../contexts/pagination-context';
+import { Logo } from '../logo';
+import { SearchBar } from '../search';
 
 const StyledMainContainer = styled('main')(({ theme }) => ({
   display: 'flex',
@@ -46,7 +48,6 @@ export function App() {
   const onCloseRoutingModal = () => {
     navigate(initialPath || '/', { replace: true });
   };
-
   const createPost = (dataForm) => {
     postApi.createOne({ ...dataForm, isPublished: true }).then(data => {
       setPosts(prevState => [data, ...prevState]);
@@ -143,7 +144,7 @@ export function App() {
     createPost,
     handleDeletePost,
     isLoading,
-  }), [posts, isLoading]);
+  }), [posts]);
 
   const paginationContextDetails = useMemo(() => ({ currentPage, setCurrentPage }), [currentPage]);
 
@@ -153,36 +154,45 @@ export function App() {
         <PostsContext.Provider value={postContextDetails}>
           <SearchContext.Provider value={debouncedSearchQuery}>
             <PaginationContext.Provider value={paginationContextDetails}>
-              <Header
-                handleSearchInputChange={handleSearchInputChange}
-                handleSearchSubmit={handleSearchSubmit}
-                onUpdateUser={handleUpdateUser}
-              />
+              <Header>
+                <Routes location={(backgroundLocation && { ...backgroundLocation, pathname: initialPath }) || location}>
+                  <Route path='/' element={
+                    <>
+                      <Logo />
+                      <SearchBar
+                        handleInputChange={handleSearchInputChange}
+                        handleSubmit={handleSearchSubmit}
+                      />
+                    </>
+                  } />
+                  <Route path='*' element={<Logo href="/" />} />
+                </Routes>
+              </Header>
               <StyledMainContainer>
                 <Routes location={(backgroundLocation && { ...backgroundLocation, pathname: initialPath }) || location}>
-                  <Route path="/" element={<HomePostsPage isLoading={isLoading}/>}/>
-                  <Route path="/product/:productID" element={<PostPage handleSearchRequest={handleSearchRequest}/>}/>
-                  <Route path="*" element={<NotFoundPage/>}/>
+                  <Route path="/" element={<HomePostsPage isLoading={isLoading} />} />
+                  <Route path="/post/:postID" element={<PostPage handleSearchRequest={handleSearchRequest} />} />
+                  <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </StyledMainContainer>
-              <Footer/>
+              <Footer />
               {backgroundLocation && <Routes>
                 <Route path="/profile/edit" element={
                   <Modal isOpen onClose={onCloseRoutingModal}>
-                    <EditProfileInfo onUpdateUser={handleUpdateUser} onClose={onCloseRoutingModal}/>
+                    <EditProfileInfo onUpdateUser={handleUpdateUser} onClose={onCloseRoutingModal} />
                   </Modal>
-                }/>
+                } />
                 <Route path="/post/new" element={
                   <Modal isOpen onClose={onCloseRoutingModal}>
-                    <NewPost onSubmit={createPost} onClose={onCloseRoutingModal}/>
+                    <NewPost onSubmit={createPost} onClose={onCloseRoutingModal} />
                   </Modal>
-                }/>
+                } />
 
                 <Route path="/post/edit/:id" element={
                   <Modal isOpen onClose={onCloseRoutingModal}>
-                    <EditPost onSubmit={updatePost} onClose={onCloseRoutingModal}/>
+                    <EditPost onSubmit={updatePost} onClose={onCloseRoutingModal} />
                   </Modal>
-                }/>
+                } />
               </Routes>}
             </PaginationContext.Provider>
           </SearchContext.Provider>

@@ -1,11 +1,7 @@
-import './styles.css';
-import { Logo } from '../logo';
 import { Profile } from '../profile';
-import { SearchBar } from '../search';
 import { AppBar, Box, Toolbar } from '@mui/material';
-import { Route, Routes } from 'react-router-dom';
 
-export function Header({ handleSearchInputChange, handleSearchSubmit}) {
+export function Header({ children }) {
 
   const toolbar = {
     width: 1150,
@@ -18,11 +14,7 @@ export function Header({ handleSearchInputChange, handleSearchSubmit}) {
     <Box sx={{ display: 'flex' }}>
       <AppBar sx={{ alignItems: 'center', background: 'white' }} component="nav">
         <Toolbar sx={toolbar}>
-          <Logo/>
-          <Routes>
-            <Route path='*' element={<SearchBar handleInputChange={handleSearchInputChange}
-                                                handleSubmit={handleSearchSubmit}/>}/>
-          </Routes>
+          {children}
           <Profile />
         </Toolbar>
       </AppBar>
